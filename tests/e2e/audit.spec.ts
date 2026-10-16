@@ -19,5 +19,7 @@ test("rejects a non-public destination", async ({ page }) => {
   await page.goto("/");
   await page.getByLabel("Your website URL").fill("http://127.0.0.1");
   await page.getByRole("button", { name: "Check my website" }).click();
-  await expect(page.getByRole("alert")).toContainText("public HTTP(S)");
+  await expect(
+    page.getByText("Enter a public HTTP(S) website URL.", { exact: true }),
+  ).toBeVisible();
 });
