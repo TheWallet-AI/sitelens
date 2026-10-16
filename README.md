@@ -4,6 +4,12 @@ An open-source website and GEO readiness checker built with Next.js 16. See what
 
 **Readiness is not a ranking, indexing, or AI citation guarantee.** SiteLens does not query AI search engines or measure actual citations.
 
+## Try the free website checker
+
+Use the [Infoholder free website checker](https://www.infoholder.io/app-studio/en/tools/site-check) in your browser, or self-host SiteLens using the instructions below.
+
+The Infoholder tool and this open-source project may offer different features as they evolve. The link does not imply that the hosted tool runs this exact version of SiteLens.
+
 ## Features
 
 - Sample a homepage and up to four same-origin links, one level deep.
