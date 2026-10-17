@@ -107,7 +107,7 @@ export async function safeFetch(
             agent: false,
             maxHeaderSize: 16384,
             headers: {
-              "user-agent": "SiteLens/0.1",
+              "user-agent": "SiteLens/0.2 (+https://github.com/TheWallet-AI/sitelens)",
               accept: options.accept ?? "text/html,text/plain;q=0.9",
               "accept-encoding": "gzip, deflate, br",
             },

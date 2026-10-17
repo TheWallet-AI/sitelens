@@ -1,9 +1,15 @@
 import type { Check, CrawlResult, DimensionSummary } from "./schema";
-import { READINESS_DIMENSIONS, resourceSpec, type ReadinessDimension } from "./contract";
+import {
+  READINESS_DIMENSIONS,
+  resourceSpec,
+  type ReadinessDimension,
+} from "./contract";
 import type { ResourceObservation } from "./resources";
 import { isContactLink, isNextStepLink, linkActions } from "./actions";
 
-type Meta = Required<Pick<Check, "dimension" | "priority" | "evidenceKind" | "limitation">> & {
+type Meta = Required<
+  Pick<Check, "dimension" | "priority" | "evidenceKind" | "limitation">
+> & {
   remediation?: string;
 };
 
@@ -13,14 +19,16 @@ const PAGE_META: Record<string, Meta> = {
     dimension: "find",
     priority: "high",
     evidenceKind: "observed",
-    limitation: "Only a bounded sample of public HTML pages is fetched; JavaScript is not executed.",
+    limitation:
+      "Only a bounded sample of public HTML pages is fetched; JavaScript is not executed.",
   },
   title: {
     dimension: "understand",
     priority: "high",
     evidenceKind: "observed",
     limitation: "Presence is checked, not wording quality.",
-    remediation: "Give each page a specific <title> that names the business and the page topic.",
+    remediation:
+      "Give each page a specific <title> that names the business and the page topic.",
   },
   description: {
     dimension: "understand",
@@ -33,29 +41,36 @@ const PAGE_META: Record<string, Meta> = {
     dimension: "understand",
     priority: "medium",
     evidenceKind: "observed",
-    limitation: "Heading presence only; structure and relevance are not scored.",
+    limitation:
+      "Heading presence only; structure and relevance are not scored.",
     remediation: "Use one clear H1 per page and H2 headings for main sections.",
   },
   canonical: {
     dimension: "find",
     priority: "medium",
     evidenceKind: "observed",
-    limitation: "A declared canonical URL is not verified to be correct or reachable.",
-    remediation: "Declare <link rel=\"canonical\"> with the page's own public URL.",
+    limitation:
+      "A declared canonical URL is not verified to be correct or reachable.",
+    remediation:
+      'Declare <link rel="canonical"> with the page\'s own public URL.',
   },
   "robots-meta": {
     dimension: "find",
     priority: "high",
     evidenceKind: "observed",
-    limitation: "Only sampled pages' robots meta tags are read; HTTP X-Robots-Tag headers are not.",
-    remediation: "Remove noindex from pages that should appear in search and AI answers.",
+    limitation:
+      "Only sampled pages' robots meta tags are read; HTTP X-Robots-Tag headers are not.",
+    remediation:
+      "Remove noindex from pages that should appear in search and AI answers.",
   },
   "structured-data": {
     dimension: "understand",
     priority: "medium",
     evidenceKind: "observed",
-    limitation: "JSON-LD parseability and selected fields only; schema.org validity and accuracy are not verified.",
-    remediation: "Publish Organization or LocalBusiness JSON-LD that matches what the page shows.",
+    limitation:
+      "JSON-LD parseability and selected fields only; schema.org validity and accuracy are not verified.",
+    remediation:
+      "Publish Organization or LocalBusiness JSON-LD that matches what the page shows.",
   },
   contact: {
     dimension: "act",
@@ -70,13 +85,15 @@ const PAGE_META: Record<string, Meta> = {
     evidenceKind: "observed",
     limitation:
       "Link text and URLs are matched in English, Chinese, Japanese and Malay; the flow behind a link was not executed.",
-    remediation: "Add a clearly labelled link for the main customer action (book, order, register, or enquire).",
+    remediation:
+      "Add a clearly labelled link for the main customer action (book, order, register, or enquire).",
   },
   "business-description": {
     dimension: "understand",
     priority: "medium",
     evidenceKind: "observed",
-    limitation: "Metadata only; prose descriptions on unvisited pages may exist.",
+    limitation:
+      "Metadata only; prose descriptions on unvisited pages may exist.",
   },
   "service-area": {
     dimension: "understand",
@@ -101,12 +118,17 @@ const PAGE_META: Record<string, Meta> = {
 };
 
 const RESOURCE_LIMITATIONS: Record<string, string> = {
-  robots_txt: "Rules are evaluated for tracked crawler names; other agents may behave differently.",
-  sitemap_xml: "Structure and URL origins are checked; listed URLs are not all fetched.",
-  llms_txt: "llms.txt is a convention; publishing it does not guarantee that any AI system reads it.",
+  robots_txt:
+    "Rules are evaluated for tracked crawler names; other agents may behave differently.",
+  sitemap_xml:
+    "Structure and URL origins are checked; listed URLs are not all fetched.",
+  llms_txt:
+    "llms.txt is a convention; publishing it does not guarantee that any AI system reads it.",
   llms_full_txt: "Only structure and a size-bounded excerpt are inspected.",
-  ai_txt: "ai.txt has no single standard and does not override robots.txt or authorization.",
-  ai_json: "ai.json has no single standard; only known profiles are validated in depth.",
+  ai_txt:
+    "ai.txt has no single standard and does not override robots.txt or authorization.",
+  ai_json:
+    "ai.json has no single standard; only known profiles are validated in depth.",
   business_actions:
     "Declared actions and their reach are self-reported; SiteLens does not execute bookings, orders, or payments.",
   mcp_discovery:
@@ -114,19 +136,27 @@ const RESOURCE_LIMITATIONS: Record<string, string> = {
   mcp_server_card:
     "Tools listed in a server card are self-declared. SiteLens never calls MCP tools or attempts authorization.",
   api_catalog: "Catalog structure only; listed APIs are not called.",
-  openapi: "Document structure only; operations are not called and authentication is not tested.",
+  openapi:
+    "Document structure only; operations are not called and authentication is not tested.",
 };
 
 const RESOURCE_REMEDIATION: Partial<Record<string, string>> = {
-  robots_txt: "Publish /robots.txt with a Sitemap line; block only what you intend to block.",
-  sitemap_xml: "Publish /sitemap.xml with absolute URLs on your own domain and list it in robots.txt.",
-  llms_txt: "Publish /llms.txt: an H1 with the business name, a one-line summary, and links to key pages.",
+  robots_txt:
+    "Publish /robots.txt with a Sitemap line; block only what you intend to block.",
+  sitemap_xml:
+    "Publish /sitemap.xml with absolute URLs on your own domain and list it in robots.txt.",
+  llms_txt:
+    "Publish /llms.txt: an H1 with the business name, a one-line summary, and links to key pages.",
   ai_json: "Serve valid JSON whose URLs point to your own site.",
-  business_actions: "Regenerate the manifest so every action starts on your site with an absolute URL.",
-  mcp_discovery: "Point the declaration to a live HTTPS endpoint, or remove it.",
-  mcp_server_card: "Point the server card to a live HTTPS endpoint, or remove it.",
+  business_actions:
+    "Regenerate the manifest so every action starts on your site with an absolute URL.",
+  mcp_discovery:
+    "Point the declaration to a live HTTPS endpoint, or remove it.",
+  mcp_server_card:
+    "Point the server card to a live HTTPS endpoint, or remove it.",
   api_catalog: "Serve an RFC 9727 Linkset as application/linkset+json.",
-  openapi: "Serve a valid OpenAPI 3.x JSON document describing only public operations.",
+  openapi:
+    "Serve a valid OpenAPI 3.x JSON document describing only public operations.",
 };
 
 const kebab = (kind: string) => kind.replace(/_/g, "-");
@@ -149,7 +179,12 @@ export function resourceChecks(resources: ResourceObservation[]): Check[] {
         status = "fail";
         break;
       case "not_found":
-        status = obs.kind === "robots_txt" ? "pass" : optional ? "not_applicable" : "warning";
+        status =
+          obs.kind === "robots_txt"
+            ? "pass"
+            : optional
+              ? "not_applicable"
+              : "warning";
         break;
       case "not_applicable":
         status = "not_applicable";
@@ -158,7 +193,10 @@ export function resourceChecks(resources: ResourceObservation[]): Check[] {
         status = "unknown";
     }
     const declaredKind =
-      obs.state === "valid" && ["business_actions", "mcp_discovery", "mcp_server_card"].includes(obs.kind);
+      obs.state === "valid" &&
+      ["business_actions", "mcp_discovery", "mcp_server_card"].includes(
+        obs.kind,
+      );
     const priority: Check["priority"] =
       status === "fail"
         ? "high"
@@ -168,7 +206,9 @@ export function resourceChecks(resources: ResourceObservation[]): Check[] {
             ? "medium"
             : "low";
     const remediation =
-      status === "warning" || status === "fail" ? RESOURCE_REMEDIATION[obs.kind] : undefined;
+      status === "warning" || status === "fail"
+        ? RESOURCE_REMEDIATION[obs.kind]
+        : undefined;
     const explanation =
       status === "not_applicable"
         ? `${obs.summary} This is optional; most businesses do not need it unless they offer it to agents or developers.`
@@ -184,12 +224,17 @@ export function resourceChecks(resources: ResourceObservation[]): Check[] {
       evidenceKind: declaredKind ? "declared" : "observed",
       limitation: RESOURCE_LIMITATIONS[obs.kind] ?? "Structure only.",
       ...(remediation ? { remediation } : {}),
-      ...(obs.issues.length ? { findingCodes: [...new Set(obs.issues.map((i) => i.code))] } : {}),
+      ...(obs.issues.length
+        ? { findingCodes: [...new Set(obs.issues.map((i) => i.code))] }
+        : {}),
     };
   });
 }
 
-export function runChecks(result: CrawlResult, resources: ResourceObservation[] = []): Check[] {
+export function runChecks(
+  result: CrawlResult,
+  resources: ResourceObservation[] = [],
+): Check[] {
   const ids = result.evidence.map((e) => e.id);
   const pages = result.extracted;
   const known = pages.length > 0;
@@ -222,7 +267,8 @@ export function runChecks(result: CrawlResult, resources: ResourceObservation[] 
   const EMAIL = /\b[\w.+-]+@[\w.-]+\.[a-z]{2,}\b/i;
   const contactOn = (p: CrawlResult["extracted"][number]) =>
     p.links.some(isContactLink) || EMAIL.test(p.text);
-  const nextStepOn = (p: CrawlResult["extracted"][number]) => p.links.some(isNextStepLink);
+  const nextStepOn = (p: CrawlResult["extracted"][number]) =>
+    p.links.some(isNextStepLink);
   const kinds = [
     ...new Set(pages.flatMap((p) => p.links.flatMap((l) => linkActions(l)))),
   ];
@@ -383,7 +429,8 @@ export function runChecks(result: CrawlResult, resources: ResourceObservation[] 
       priority: meta.priority,
       evidenceKind: meta.evidenceKind,
       limitation: meta.limitation,
-      ...(meta.remediation && (item.status === "warning" || item.status === "fail")
+      ...(meta.remediation &&
+      (item.status === "warning" || item.status === "fail")
         ? { remediation: meta.remediation }
         : {}),
     });
@@ -400,12 +447,21 @@ export function summarizeReadiness(checks: Check[]): DimensionSummary[] {
   return READINESS_DIMENSIONS.map((dimension: ReadinessDimension) => {
     const own = checks.filter((c) => c.dimension === dimension);
     const passed = own.filter((c) => c.status === "pass").length;
-    const attention = own.filter((c) => c.status === "warning" || c.status === "fail").length;
+    const attention = own.filter(
+      (c) => c.status === "warning" || c.status === "fail",
+    ).length;
     const unknown = own.filter((c) => c.status === "unknown").length;
-    const notApplicable = own.filter((c) => c.status === "not_applicable").length;
+    const notApplicable = own.filter(
+      (c) => c.status === "not_applicable",
+    ).length;
     return {
       dimension,
-      status: passed + attention === 0 ? "unknown" : attention ? "needs_attention" : "good",
+      status:
+        passed + attention === 0
+          ? "unknown"
+          : attention
+            ? "needs_attention"
+            : "good",
       passed,
       attention,
       unknown,
@@ -416,7 +472,13 @@ export function summarizeReadiness(checks: Check[]): DimensionSummary[] {
 }
 
 const PRIORITY_ORDER = { high: 0, medium: 1, low: 2 } as const;
-const STATUS_ORDER = { fail: 0, warning: 1, unknown: 2, pass: 3, not_applicable: 4 } as const;
+const STATUS_ORDER = {
+  fail: 0,
+  warning: 1,
+  unknown: 2,
+  pass: 3,
+  not_applicable: 4,
+} as const;
 
 /** Findings that need attention first, most important first. Stable. */
 export function prioritized(checks: Check[]): Check[] {
@@ -425,7 +487,8 @@ export function prioritized(checks: Check[]): Check[] {
     .sort(
       (a, b) =>
         STATUS_ORDER[a.c.status] - STATUS_ORDER[b.c.status] ||
-        PRIORITY_ORDER[a.c.priority ?? "low"] - PRIORITY_ORDER[b.c.priority ?? "low"] ||
+        PRIORITY_ORDER[a.c.priority ?? "low"] -
+          PRIORITY_ORDER[b.c.priority ?? "low"] ||
         a.i - b.i,
     )
     .map(({ c }) => c);

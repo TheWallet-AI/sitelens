@@ -154,7 +154,13 @@ export type AuditEvent =
       message: string;
     }
   /** v2: one machine-readable resource was inspected. */
-  | { runId: string; type: "resource"; message: string; kind: string; state: string }
+  | {
+      runId: string;
+      type: "resource";
+      message: string;
+      kind: string;
+      state: string;
+    }
   | { runId: string; type: "result"; report: AuditReport };
 export function validateReportReferences(report: {
   evidence: Pick<Evidence, "id">[];
@@ -175,7 +181,9 @@ export function validateReportReferences(report: {
     [...report.checks, ...report.recommendations, ...claims].every((c) =>
       c.evidenceIds.every((id) => ids.has(id)),
     ) &&
-    (report.resources ?? []).every((r) => r.evidenceId === null || ids.has(r.evidenceId)) &&
+    (report.resources ?? []).every(
+      (r) => r.evidenceId === null || ids.has(r.evidenceId),
+    ) &&
     claims.every((c) => c.state !== "supported" || c.evidenceIds.length > 0)
   );
 }

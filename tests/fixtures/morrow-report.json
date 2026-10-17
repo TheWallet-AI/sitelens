@@ -1,0 +1,713 @@
+{
+  "schemaVersion": "2",
+  "contract": "agent-readiness/1",
+  "runId": "fixture",
+  "startedAt": "2026-10-17T00:00:00.000Z",
+  "completedAt": "2026-10-17T00:00:00.000Z",
+  "inputUrl": "https://morrow-coffee.example.com/",
+  "finalUrl": "https://morrow-coffee.example.com/",
+  "coverage": {
+    "attempted": 3,
+    "retrieved": 3,
+    "truncated": false,
+    "notes": [
+      "Only sampled public HTML pages were checked. No JavaScript, forms, or transactions were executed.",
+      "Machine-readable files were fetched with GET only. Declared tools, APIs, and actions were not invoked."
+    ]
+  },
+  "pages": [
+    {
+      "url": "https://morrow-coffee.example.com/",
+      "finalUrl": "https://morrow-coffee.example.com/",
+      "status": 200,
+      "evidenceIds": [
+        "page-1"
+      ]
+    },
+    {
+      "url": "https://morrow-coffee.example.com/menu",
+      "finalUrl": "https://morrow-coffee.example.com/menu",
+      "status": 200,
+      "evidenceIds": [
+        "page-2"
+      ]
+    },
+    {
+      "url": "https://morrow-coffee.example.com/reservations",
+      "finalUrl": "https://morrow-coffee.example.com/reservations",
+      "status": 200,
+      "evidenceIds": [
+        "page-3"
+      ]
+    }
+  ],
+  "evidence": [
+    {
+      "id": "page-1",
+      "sourceUrl": "https://morrow-coffee.example.com/",
+      "finalUrl": "https://morrow-coffee.example.com/",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "Observed metadata and links: {\"title\":\"Morrow Coffee (demo business)\",\"description\":\"Fictional neighbourhood cafe used to demonstrate SiteLens: espresso, filter coffee and pastries.\",\"canonical\":\"https://morrow-coffee.example.com/\",\"robots\":\"\",\"headings\":[\"Morrow Coffee\"],\"jsonLdBlocks\":1,\"jsonLdErrors\":0,\"entityFields\":{\"@type\":\"CafeOrCoffeeShop\",\"name\":\"Morrow Coffee (demo business)\",\"address\":\"1 Demo Lane\",\"openingHours\":\"Mo-Fr 08:00-16:00\"},\"contactLink\":{\"url\":\"mailto:hello@morrow-coffee.example.com\",\"text\":\"Contact\"},\"actionLink\":{\"url\":\"https://morrow-coffee.example.com/reservations\",\"text\":\"Book a table\"}}\nMain text: Morrow CoffeeA fictional cafe. Espresso, filter coffee and pastries every weekday. Menu Book a table Contact",
+      "locationHint": "Bounded metadata, recognized links, and extracted main content."
+    },
+    {
+      "id": "page-2",
+      "sourceUrl": "https://morrow-coffee.example.com/menu",
+      "finalUrl": "https://morrow-coffee.example.com/menu",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "Observed metadata and links: {\"title\":\"Menu · Morrow Coffee\",\"description\":\"\",\"canonical\":\"\",\"robots\":\"\",\"headings\":[\"Menu\"],\"jsonLdBlocks\":0,\"jsonLdErrors\":0,\"entityFields\":{},\"contactLink\":null,\"actionLink\":null}\nMain text: MenuFlat white, filter coffee, croissant. Prices are shown in store.",
+      "locationHint": "Bounded metadata, recognized links, and extracted main content."
+    },
+    {
+      "id": "page-3",
+      "sourceUrl": "https://morrow-coffee.example.com/reservations",
+      "finalUrl": "https://morrow-coffee.example.com/reservations",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "Observed metadata and links: {\"title\":\"Morrow Coffee (demo business)\",\"description\":\"Fictional neighbourhood cafe used to demonstrate SiteLens: espresso, filter coffee and pastries.\",\"canonical\":\"https://morrow-coffee.example.com/\",\"robots\":\"\",\"headings\":[\"Morrow Coffee\"],\"jsonLdBlocks\":1,\"jsonLdErrors\":0,\"entityFields\":{\"@type\":\"CafeOrCoffeeShop\",\"name\":\"Morrow Coffee (demo business)\",\"address\":\"1 Demo Lane\",\"openingHours\":\"Mo-Fr 08:00-16:00\"},\"contactLink\":{\"url\":\"mailto:hello@morrow-coffee.example.com\",\"text\":\"Contact\"},\"actionLink\":{\"url\":\"https://morrow-coffee.example.com/reservations\",\"text\":\"Book a table\"}}\nMain text: Morrow CoffeeA fictional cafe. Espresso, filter coffee and pastries every weekday. Menu Book a table Contact",
+      "locationHint": "Bounded metadata, recognized links, and extracted main content."
+    },
+    {
+      "id": "resource-robots-txt",
+      "sourceUrl": "https://morrow-coffee.example.com/robots.txt",
+      "finalUrl": "https://morrow-coffee.example.com/robots.txt",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "User-agent: *\nAllow: /\nSitemap: https://morrow-coffee.example.com/sitemap.xml\n",
+      "locationHint": "Machine-readable resource (robots_txt); bounded excerpt, sensitive values redacted."
+    },
+    {
+      "id": "resource-sitemap-xml",
+      "sourceUrl": "https://morrow-coffee.example.com/sitemap.xml",
+      "finalUrl": "https://morrow-coffee.example.com/sitemap.xml",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n  <url><loc>https://morrow-coffee.example.com/</loc></url>\n  <url><loc>https://morrow-coffee.example.com/menu</loc></url>\n  <url><loc>https://morrow-coffee.example.com/reservations</loc></url>\n</urlset>\n",
+      "locationHint": "Machine-readable resource (sitemap_xml); bounded excerpt, sensitive values redacted."
+    },
+    {
+      "id": "resource-llms-txt",
+      "sourceUrl": "https://morrow-coffee.example.com/llms.txt",
+      "finalUrl": "https://morrow-coffee.example.com/llms.txt",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "# Morrow Coffee (demo business)\n\n> Fictional neighbourhood cafe used to demonstrate SiteLens. Espresso, filter coffee and pastries.\n\n## Pages\n\n- [Home](https://morrow-coffee.example.com/)\n- [Menu](https://morrow-coffee.example.com/menu)\n- [Book a table](https://morrow-coffee.example.com/reservations)\n\n## Machine-readable\n\n- [Business actions](https://morrow-coffee.example.com/.well-known/business-actions.json)\n",
+      "locationHint": "Machine-readable resource (llms_txt); bounded excerpt, sensitive values redacted."
+    },
+    {
+      "id": "resource-ai-json",
+      "sourceUrl": "https://morrow-coffee.example.com/ai.json",
+      "finalUrl": "https://morrow-coffee.example.com/ai.json",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "{\n  \"spec\": \"infoholder-ai-json/1\",\n  \"name\": \"Morrow Coffee (demo business)\",\n  \"url\": \"https://morrow-coffee.example.com\",\n  \"description\": \"Fictional neighbourhood cafe used to demonstrate SiteLens.\",\n  \"status\": \"live\",\n  \"generatedAt\": \"2026-10-17T00:00:00.000Z\",\n  \"generator\": \"Infoholder Studio\",\n  \"resources\": [\n    { \"kind\": \"llms_txt\", \"url\": \"https://morrow-coffee.example.com/llms.txt\" },\n    { \"kind\": \"business_actions\", \"url\": \"https://morrow-coffee.example.com/.well-known/business-actions.json\" },\n    { \"kind\": \"sitemap_xml\", \"url\": \"https://morrow-coffee.example.com/sitemap.xml\" }\n  ],\n  \"capabilities\": [\n    { \"type\": \"reservation\", \"url\": \"https://morrow-coffee.example.com/reservations\", \"reach\": \"ai_readable\" }\n  ],\n  \"limitations\": [\n    \"Live prices, availability and stock are not included in this file.\"\n  ]\n}\n",
+      "locationHint": "Machine-readable resource (ai_json); bounded excerpt, sensitive values redacted."
+    },
+    {
+      "id": "resource-business-actions",
+      "sourceUrl": "https://morrow-coffee.example.com/.well-known/business-actions.json",
+      "finalUrl": "https://morrow-coffee.example.com/.well-known/business-actions.json",
+      "retrievedAt": "2026-10-17T00:00:00.000Z",
+      "excerpt": "{\"version\":1,\"business\":{\"name\":\"Morrow\"},\"actions\":[]}",
+      "locationHint": "Machine-readable resource (business_actions); bounded excerpt, sensitive values redacted."
+    }
+  ],
+  "checks": [
+    {
+      "id": "retrieval",
+      "category": "access",
+      "status": "pass",
+      "explanation": "Retrieved 3 of 3 attempted pages.",
+      "evidenceIds": [
+        "page-1",
+        "page-2",
+        "page-3"
+      ],
+      "dimension": "find",
+      "priority": "high",
+      "evidenceKind": "observed",
+      "limitation": "Only a bounded sample of public HTML pages is fetched; JavaScript is not executed."
+    },
+    {
+      "id": "title",
+      "category": "content",
+      "status": "pass",
+      "explanation": "A page title was observed.",
+      "evidenceIds": [
+        "page-1",
+        "page-2",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "high",
+      "evidenceKind": "observed",
+      "limitation": "Presence is checked, not wording quality."
+    },
+    {
+      "id": "description",
+      "category": "content",
+      "status": "pass",
+      "explanation": "Description metadata was observed.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "Presence is checked, not accuracy."
+    },
+    {
+      "id": "headings",
+      "category": "content",
+      "status": "pass",
+      "explanation": "Headings help organize sampled content.",
+      "evidenceIds": [
+        "page-1",
+        "page-2",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "Heading presence only; structure and relevance are not scored."
+    },
+    {
+      "id": "canonical",
+      "category": "access",
+      "status": "pass",
+      "explanation": "A canonical declaration was observed; its correctness is not established.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "find",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "A declared canonical URL is not verified to be correct or reachable."
+    },
+    {
+      "id": "robots-meta",
+      "category": "access",
+      "status": "pass",
+      "explanation": "No noindex directive was observed in sampled page metadata.",
+      "evidenceIds": [
+        "page-1",
+        "page-2",
+        "page-3"
+      ],
+      "dimension": "find",
+      "priority": "high",
+      "evidenceKind": "observed",
+      "limitation": "Only sampled pages' robots meta tags are read; HTTP X-Robots-Tag headers are not."
+    },
+    {
+      "id": "structured-data",
+      "category": "content",
+      "status": "pass",
+      "explanation": "Parseable JSON-LD was found; claims and eligibility are not verified.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "JSON-LD parseability and selected fields only; schema.org validity and accuracy are not verified."
+    },
+    {
+      "id": "contact",
+      "category": "actions",
+      "status": "pass",
+      "explanation": "A contact link or email was observed. Its operation was not tested.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "act",
+      "priority": "high",
+      "evidenceKind": "observed",
+      "limitation": "Links are recognized; contact channels were not tested."
+    },
+    {
+      "id": "next-step",
+      "category": "actions",
+      "status": "pass",
+      "explanation": "A customer action link was observed (booking). Its flow was not executed.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "act",
+      "priority": "high",
+      "evidenceKind": "observed",
+      "limitation": "Link text and URLs are matched in English, Chinese, Japanese and Malay; the flow behind a link was not executed."
+    },
+    {
+      "id": "business-description",
+      "category": "content",
+      "status": "pass",
+      "explanation": "Business description metadata was observed; accuracy and completeness are not verified.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "Metadata only; prose descriptions on unvisited pages may exist."
+    },
+    {
+      "id": "service-area",
+      "category": "content",
+      "status": "pass",
+      "explanation": "A structured service area or address was observed; accuracy and completeness are not verified.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Structured address or areaServed only."
+    },
+    {
+      "id": "operating-information",
+      "category": "content",
+      "status": "pass",
+      "explanation": "Structured opening hours was observed; accuracy and completeness are not verified.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Structured openingHours only."
+    },
+    {
+      "id": "entity-fields",
+      "category": "content",
+      "status": "pass",
+      "explanation": "A structured entity name and type was observed; accuracy and completeness are not verified.",
+      "evidenceIds": [
+        "page-1",
+        "page-3"
+      ],
+      "dimension": "understand",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "Name and @type presence only."
+    },
+    {
+      "id": "resource-robots-txt",
+      "category": "machine",
+      "status": "pass",
+      "explanation": "Crawl rules found; no tracked AI crawler is disallowed at the root.",
+      "evidenceIds": [
+        "resource-robots-txt"
+      ],
+      "dimension": "find",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Rules are evaluated for tracked crawler names; other agents may behave differently."
+    },
+    {
+      "id": "resource-sitemap-xml",
+      "category": "machine",
+      "status": "pass",
+      "explanation": "Valid sitemap listing 3 URL(s).",
+      "evidenceIds": [
+        "resource-sitemap-xml"
+      ],
+      "dimension": "find",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Structure and URL origins are checked; listed URLs are not all fetched."
+    },
+    {
+      "id": "resource-llms-txt",
+      "category": "machine",
+      "status": "pass",
+      "explanation": "Readable Markdown index with 2 section(s) and 4 link(s).",
+      "evidenceIds": [
+        "resource-llms-txt"
+      ],
+      "dimension": "find",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "llms.txt is a convention; publishing it does not guarantee that any AI system reads it."
+    },
+    {
+      "id": "resource-llms-full-txt",
+      "category": "machine",
+      "status": "not_applicable",
+      "explanation": "Not published (HTTP 404). This is optional; most businesses do not need it unless they offer it to agents or developers.",
+      "evidenceIds": [],
+      "dimension": "understand",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Only structure and a size-bounded excerpt are inspected."
+    },
+    {
+      "id": "resource-ai-txt",
+      "category": "machine",
+      "status": "not_applicable",
+      "explanation": "Not published (HTTP 404). This is optional; most businesses do not need it unless they offer it to agents or developers.",
+      "evidenceIds": [],
+      "dimension": "understand",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "ai.txt has no single standard and does not override robots.txt or authorization."
+    },
+    {
+      "id": "resource-ai-json",
+      "category": "machine",
+      "status": "pass",
+      "explanation": "Structured site profile (infoholder-ai-json/1) with 1 declared action(s).",
+      "evidenceIds": [
+        "resource-ai-json"
+      ],
+      "dimension": "understand",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "ai.json has no single standard; only known profiles are validated in depth."
+    },
+    {
+      "id": "resource-business-actions",
+      "category": "machine",
+      "status": "warning",
+      "explanation": "\"business.url\" is not an absolute http(s) URL.",
+      "evidenceIds": [
+        "resource-business-actions"
+      ],
+      "dimension": "act",
+      "priority": "medium",
+      "evidenceKind": "observed",
+      "limitation": "Declared actions and their reach are self-reported; SiteLens does not execute bookings, orders, or payments.",
+      "remediation": "Regenerate the manifest so every action starts on your site with an absolute URL.",
+      "findingCodes": [
+        "business_actions_malformed"
+      ]
+    },
+    {
+      "id": "resource-mcp-discovery",
+      "category": "machine",
+      "status": "not_applicable",
+      "explanation": "Not published (HTTP 404). This is optional; most businesses do not need it unless they offer it to agents or developers.",
+      "evidenceIds": [],
+      "dimension": "act",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "A declaration is not proof the server works. SiteLens never calls MCP tools or attempts authorization."
+    },
+    {
+      "id": "resource-mcp-server-card",
+      "category": "machine",
+      "status": "not_applicable",
+      "explanation": "Not published (HTTP 404). This is optional; most businesses do not need it unless they offer it to agents or developers.",
+      "evidenceIds": [],
+      "dimension": "act",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Tools listed in a server card are self-declared. SiteLens never calls MCP tools or attempts authorization."
+    },
+    {
+      "id": "resource-api-catalog",
+      "category": "machine",
+      "status": "not_applicable",
+      "explanation": "Not published (HTTP 404). This is optional; most businesses do not need it unless they offer it to agents or developers.",
+      "evidenceIds": [],
+      "dimension": "act",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Catalog structure only; listed APIs are not called."
+    },
+    {
+      "id": "resource-openapi",
+      "category": "machine",
+      "status": "not_applicable",
+      "explanation": "Not published (HTTP 404). This is optional; most businesses do not need it unless they offer it to agents or developers.",
+      "evidenceIds": [],
+      "dimension": "act",
+      "priority": "low",
+      "evidenceKind": "observed",
+      "limitation": "Document structure only; operations are not called and authentication is not tested."
+    }
+  ],
+  "resources": [
+    {
+      "kind": "robots_txt",
+      "url": "https://morrow-coffee.example.com/robots.txt",
+      "finalUrl": "https://morrow-coffee.example.com/robots.txt",
+      "httpStatus": 200,
+      "contentType": "text/plain",
+      "bytes": 78,
+      "issues": [],
+      "declared": {
+        "links": [
+          "https://morrow-coffee.example.com/sitemap.xml"
+        ],
+        "sitemaps": [
+          "https://morrow-coffee.example.com/sitemap.xml"
+        ],
+        "blockedAgents": []
+      },
+      "evidenceId": "resource-robots-txt",
+      "state": "valid",
+      "summary": "Crawl rules found; no tracked AI crawler is disallowed at the root."
+    },
+    {
+      "kind": "sitemap_xml",
+      "url": "https://morrow-coffee.example.com/sitemap.xml",
+      "finalUrl": "https://morrow-coffee.example.com/sitemap.xml",
+      "httpStatus": 200,
+      "contentType": "application/xml",
+      "bytes": 303,
+      "issues": [],
+      "declared": {
+        "links": [],
+        "count": 3
+      },
+      "evidenceId": "resource-sitemap-xml",
+      "state": "valid",
+      "summary": "Valid sitemap listing 3 URL(s)."
+    },
+    {
+      "kind": "llms_txt",
+      "url": "https://morrow-coffee.example.com/llms.txt",
+      "finalUrl": "https://morrow-coffee.example.com/llms.txt",
+      "httpStatus": 200,
+      "contentType": "text/markdown",
+      "bytes": 414,
+      "issues": [],
+      "declared": {
+        "links": [
+          "https://morrow-coffee.example.com/",
+          "https://morrow-coffee.example.com/menu",
+          "https://morrow-coffee.example.com/reservations",
+          "https://morrow-coffee.example.com/.well-known/business-actions.json"
+        ]
+      },
+      "evidenceId": "resource-llms-txt",
+      "state": "valid",
+      "summary": "Readable Markdown index with 2 section(s) and 4 link(s)."
+    },
+    {
+      "kind": "llms_full_txt",
+      "url": "https://morrow-coffee.example.com/llms-full.txt",
+      "finalUrl": "https://morrow-coffee.example.com/llms-full.txt",
+      "httpStatus": 404,
+      "contentType": "text/html",
+      "bytes": 33,
+      "issues": [],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": null,
+      "state": "not_found",
+      "summary": "Not published (HTTP 404)."
+    },
+    {
+      "kind": "ai_txt",
+      "url": "https://morrow-coffee.example.com/ai.txt",
+      "finalUrl": "https://morrow-coffee.example.com/ai.txt",
+      "httpStatus": 404,
+      "contentType": "text/html",
+      "bytes": 33,
+      "issues": [],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": null,
+      "state": "not_found",
+      "summary": "Not published (HTTP 404)."
+    },
+    {
+      "kind": "ai_json",
+      "url": "https://morrow-coffee.example.com/ai.json",
+      "finalUrl": "https://morrow-coffee.example.com/ai.json",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "bytes": 842,
+      "issues": [],
+      "declared": {
+        "links": [
+          "https://morrow-coffee.example.com/",
+          "https://morrow-coffee.example.com/llms.txt",
+          "https://morrow-coffee.example.com/.well-known/business-actions.json",
+          "https://morrow-coffee.example.com/sitemap.xml",
+          "https://morrow-coffee.example.com/reservations"
+        ],
+        "actions": [
+          {
+            "type": "reservation",
+            "url": "https://morrow-coffee.example.com/reservations",
+            "reach": "ai_readable"
+          }
+        ]
+      },
+      "evidenceId": "resource-ai-json",
+      "state": "valid",
+      "summary": "Structured site profile (infoholder-ai-json/1) with 1 declared action(s)."
+    },
+    {
+      "kind": "business_actions",
+      "url": "https://morrow-coffee.example.com/.well-known/business-actions.json",
+      "finalUrl": "https://morrow-coffee.example.com/.well-known/business-actions.json",
+      "httpStatus": 200,
+      "contentType": "application/json",
+      "bytes": 55,
+      "issues": [
+        {
+          "code": "business_actions_malformed",
+          "detail": "\"business.url\" is not an absolute http(s) URL."
+        }
+      ],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": "resource-business-actions",
+      "state": "malformed",
+      "summary": "\"business.url\" is not an absolute http(s) URL."
+    },
+    {
+      "kind": "mcp_discovery",
+      "url": "https://morrow-coffee.example.com/.well-known/mcp.json",
+      "finalUrl": "https://morrow-coffee.example.com/.well-known/mcp.json",
+      "httpStatus": 404,
+      "contentType": "text/html",
+      "bytes": 33,
+      "issues": [],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": null,
+      "state": "not_found",
+      "summary": "Not published (HTTP 404)."
+    },
+    {
+      "kind": "mcp_server_card",
+      "url": "https://morrow-coffee.example.com/.well-known/mcp/server-card.json",
+      "finalUrl": "https://morrow-coffee.example.com/.well-known/mcp/server-card.json",
+      "httpStatus": 404,
+      "contentType": "text/html",
+      "bytes": 33,
+      "issues": [],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": null,
+      "state": "not_found",
+      "summary": "Not published (HTTP 404)."
+    },
+    {
+      "kind": "api_catalog",
+      "url": "https://morrow-coffee.example.com/.well-known/api-catalog",
+      "finalUrl": "https://morrow-coffee.example.com/.well-known/api-catalog",
+      "httpStatus": 404,
+      "contentType": "text/html",
+      "bytes": 33,
+      "issues": [],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": null,
+      "state": "not_found",
+      "summary": "Not published (HTTP 404)."
+    },
+    {
+      "kind": "openapi",
+      "url": "https://morrow-coffee.example.com/openapi.json",
+      "finalUrl": "https://morrow-coffee.example.com/openapi.json",
+      "httpStatus": 404,
+      "contentType": "text/html",
+      "bytes": 33,
+      "issues": [],
+      "declared": {
+        "links": []
+      },
+      "evidenceId": null,
+      "state": "not_found",
+      "summary": "Not published (HTTP 404)."
+    }
+  ],
+  "readiness": [
+    {
+      "dimension": "find",
+      "status": "good",
+      "passed": 6,
+      "attention": 0,
+      "unknown": 0,
+      "notApplicable": 0,
+      "checkIds": [
+        "retrieval",
+        "canonical",
+        "robots-meta",
+        "resource-robots-txt",
+        "resource-sitemap-xml",
+        "resource-llms-txt"
+      ]
+    },
+    {
+      "dimension": "understand",
+      "status": "good",
+      "passed": 9,
+      "attention": 0,
+      "unknown": 0,
+      "notApplicable": 2,
+      "checkIds": [
+        "title",
+        "description",
+        "headings",
+        "structured-data",
+        "business-description",
+        "service-area",
+        "operating-information",
+        "entity-fields",
+        "resource-llms-full-txt",
+        "resource-ai-txt",
+        "resource-ai-json"
+      ]
+    },
+    {
+      "dimension": "act",
+      "status": "needs_attention",
+      "passed": 2,
+      "attention": 1,
+      "unknown": 0,
+      "notApplicable": 4,
+      "checkIds": [
+        "contact",
+        "next-step",
+        "resource-business-actions",
+        "resource-mcp-discovery",
+        "resource-mcp-server-card",
+        "resource-api-catalog",
+        "resource-openapi"
+      ]
+    }
+  ],
+  "aiAnalysis": null,
+  "recommendations": [],
+  "limits": {
+    "pages": 5,
+    "depth": 1,
+    "audits": 2,
+    "fetchConcurrency": 2,
+    "totalMs": 90000,
+    "requestMs": 10000,
+    "redirects": 3,
+    "pageBytes": 2097152,
+    "totalBytes": 10485760,
+    "pageText": 12000,
+    "totalText": 40000,
+    "resourceProbes": 11,
+    "resourceConcurrency": 3,
+    "resourceBytes": 524288,
+    "resourceMs": 6000,
+    "resourcePhaseMs": 25000,
+    "resourceLinkChecks": 4,
+    "resourceExcerpt": 1500
+  },
+  "limitations": [
+    "A readiness check is not a search ranking, an indexing guarantee, or a prediction of AI citations or recommendations.",
+    "Only a bounded sample of public pages and machine-readable files was fetched with GET; JavaScript, forms, sign-in and transactions were not executed.",
+    "Capabilities declared by the site (actions, tools, APIs) are reported as declared; whether an external agent can authenticate and complete them was not tested."
+  ]
+}

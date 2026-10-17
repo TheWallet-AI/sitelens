@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "business": {
+    "name": "Morrow Coffee (demo business)",
+    "url": "https://morrow-coffee.example.com",
+    "description": "Fictional neighbourhood cafe used to demonstrate Infoholder Studio and SiteLens."
+  },
+  "actions": [
+    {
+      "type": "reservation",
+      "url": "https://morrow-coffee.example.com/reservations",
+      "reach": "ai_readable"
+    },
+    {
+      "type": "contact",
+      "url": "https://morrow-coffee.example.com/contact",
+      "reach": "ai_readable"
+    }
+  ]
+}

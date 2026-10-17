@@ -9,14 +9,14 @@ export function integrationConfig(): IntegrationConfig {
       {
         id: "booking",
         checkId: "next-step",
-        url: "https://infoholder.io/app-studio/en/solutions/booking",
+        url: "https://www.infoholder.io/app-studio/en/solutions/booking",
         reason:
           "If your business takes appointments, a dedicated booking page can provide a clear next step.",
       },
       {
         id: "event",
         checkId: "next-step",
-        url: "https://infoholder.io/app-studio/en/solutions/event",
+        url: "https://www.infoholder.io/app-studio/en/solutions/event",
         reason:
           "If you run events or classes, a registration page can collect sign-ups.",
       },

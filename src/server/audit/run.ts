@@ -49,7 +49,10 @@ export async function runAudit(
           : "Read a public HTML page.",
       ),
   });
-  emit("phase", "Checking machine-readable files for search engines and AI agents.");
+  emit(
+    "phase",
+    "Checking machine-readable files for search engines and AI agents.",
+  );
   const phase = signal.aborted
     ? { observations: [], evidence: [], notes: [] }
     : await probeResources(new URL(crawl.finalUrl), {
@@ -95,7 +98,10 @@ export async function runAudit(
     completedAt: new Date().toISOString(),
     inputUrl: input.url,
     finalUrl: crawl.finalUrl,
-    coverage: { ...crawl.coverage, notes: [...crawl.coverage.notes, ...phase.notes] },
+    coverage: {
+      ...crawl.coverage,
+      notes: [...crawl.coverage.notes, ...phase.notes],
+    },
     pages: crawl.pages,
     evidence,
     checks,

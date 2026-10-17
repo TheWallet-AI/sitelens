@@ -55,14 +55,12 @@ export function fetchRobotsFile(
     entryHost: url.hostname,
     maxBytes: LIMITS.resourceBytes,
   })
-    .then(
-      (r): RobotsFile => ({
-        status: r.status,
-        body: r.body,
-        finalUrl: r.finalUrl,
-        contentType: r.headers["content-type"] ?? "",
-      }),
-    )
+    .then((r): RobotsFile => ({
+      status: r.status,
+      body: r.body,
+      finalUrl: r.finalUrl,
+      contentType: r.headers["content-type"] ?? "",
+    }))
     .catch(() => null);
   options.cache?.set(key, pending);
   return pending;

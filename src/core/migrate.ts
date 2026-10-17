@@ -9,7 +9,10 @@ export const REPORT_LIMITATIONS = [
   "Capabilities declared by the site (actions, tools, APIs) are reported as declared; whether an external agent can authenticate and complete them was not tested.",
 ] as const;
 
-const DIMENSION_BY_CATEGORY: Record<Check["category"], NonNullable<Check["dimension"]>> = {
+const DIMENSION_BY_CATEGORY: Record<
+  Check["category"],
+  NonNullable<Check["dimension"]>
+> = {
   access: "find",
   content: "understand",
   actions: "act",
@@ -21,7 +24,9 @@ const DIMENSION_BY_CATEGORY: Record<Check["category"], NonNullable<Check["dimens
  * v1 reports have no resource phase, so `resources` is empty and every
  * resource check is simply absent (not "missing").
  */
-export function toCurrentReport(report: AuditReport | AuditReportV1): AuditReport {
+export function toCurrentReport(
+  report: AuditReport | AuditReportV1,
+): AuditReport {
   if (report.schemaVersion === "2") return report;
   const checks = report.checks.map((c) => ({
     ...c,

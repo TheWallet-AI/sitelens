@@ -1,0 +1,44 @@
+{
+  "spec": "infoholder-ai-json/1",
+  "name": "Morrow Coffee (demo business)",
+  "url": "https://morrow-coffee.example.com",
+  "description": "Fictional neighbourhood cafe used to demonstrate Infoholder Studio and SiteLens.",
+  "status": "live",
+  "generator": "Infoholder Studio",
+  "generatedAt": "2026-10-17T00:00:00.000Z",
+  "resources": [
+    {
+      "kind": "llms_txt",
+      "url": "https://morrow-coffee.example.com/llms.txt"
+    },
+    {
+      "kind": "business_actions",
+      "url": "https://morrow-coffee.example.com/.well-known/business-actions.json"
+    },
+    {
+      "kind": "sitemap_xml",
+      "url": "https://morrow-coffee.example.com/sitemap.xml"
+    },
+    {
+      "kind": "robots_txt",
+      "url": "https://morrow-coffee.example.com/robots.txt"
+    }
+  ],
+  "capabilities": [
+    {
+      "type": "reservation",
+      "url": "https://morrow-coffee.example.com/reservations",
+      "reach": "ai_readable"
+    },
+    {
+      "type": "contact",
+      "url": "https://morrow-coffee.example.com/contact",
+      "reach": "ai_readable"
+    }
+  ],
+  "limitations": [
+    "Live prices, stock and availability are not included in this file; the business confirms them at checkout.",
+    "Publishing this file does not guarantee that any search engine or AI system reads, indexes or cites it.",
+    "Capabilities marked ai_readable can be understood and linked to by an AI system; a person completes them on the website."
+  ]
+}
