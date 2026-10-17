@@ -1,0 +1,8 @@
+{
+  "linkset": [
+    {
+      "anchor": "https://morrow-coffee.example.com/api",
+      "service-desc": [ { "href": "https://morrow-coffee.example.com/openapi.json", "type": "application/json" } ]
+    }
+  ]
+}

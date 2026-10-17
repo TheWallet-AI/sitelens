@@ -1,0 +1,219 @@
+{
+  "contract": "agent-readiness/1",
+  "dimensions": [
+    "find",
+    "understand",
+    "act"
+  ],
+  "resourceStates": [
+    "not_found",
+    "valid",
+    "malformed",
+    "inconsistent",
+    "unsafe",
+    "blocked",
+    "unknown",
+    "not_applicable"
+  ],
+  "evidenceKinds": [
+    "observed",
+    "declared",
+    "inferred",
+    "ai_interpretation",
+    "unverifiable"
+  ],
+  "actionReach": [
+    "not_available",
+    "ai_readable",
+    "ai_executable"
+  ],
+  "severities": [
+    "critical",
+    "warning",
+    "info"
+  ],
+  "resourceBasis": [
+    "standard",
+    "convention",
+    "vendor"
+  ],
+  "resources": [
+    {
+      "kind": "robots_txt",
+      "path": "/robots.txt",
+      "format": "text",
+      "basis": "standard",
+      "reference": "https://www.rfc-editor.org/rfc/rfc9309",
+      "dimension": "find",
+      "optional": true
+    },
+    {
+      "kind": "sitemap_xml",
+      "path": "/sitemap.xml",
+      "format": "xml",
+      "basis": "standard",
+      "reference": "https://www.sitemaps.org/protocol.html",
+      "dimension": "find",
+      "optional": false
+    },
+    {
+      "kind": "llms_txt",
+      "path": "/llms.txt",
+      "format": "markdown",
+      "basis": "convention",
+      "reference": "https://llmstxt.org/",
+      "dimension": "find",
+      "optional": false
+    },
+    {
+      "kind": "llms_full_txt",
+      "path": "/llms-full.txt",
+      "format": "markdown",
+      "basis": "convention",
+      "reference": "https://llmstxt.org/",
+      "dimension": "understand",
+      "optional": true
+    },
+    {
+      "kind": "ai_txt",
+      "path": "/ai.txt",
+      "format": "text",
+      "basis": "convention",
+      "reference": "docs/agent-readiness-contract.md#aitxt",
+      "dimension": "understand",
+      "optional": true
+    },
+    {
+      "kind": "ai_json",
+      "path": "/ai.json",
+      "format": "json",
+      "basis": "convention",
+      "reference": "docs/agent-readiness-contract.md#aijson",
+      "dimension": "understand",
+      "optional": true
+    },
+    {
+      "kind": "business_actions",
+      "path": "/.well-known/business-actions.json",
+      "format": "json",
+      "basis": "vendor",
+      "reference": "docs/agent-readiness-contract.md#business-actions",
+      "dimension": "act",
+      "optional": true
+    },
+    {
+      "kind": "mcp_discovery",
+      "path": "/.well-known/mcp.json",
+      "format": "json",
+      "basis": "convention",
+      "reference": "https://modelcontextprotocol.io/",
+      "dimension": "act",
+      "optional": true
+    },
+    {
+      "kind": "mcp_server_card",
+      "path": "/.well-known/mcp/server-card.json",
+      "format": "json",
+      "basis": "convention",
+      "reference": "https://modelcontextprotocol.io/",
+      "dimension": "act",
+      "optional": true
+    },
+    {
+      "kind": "api_catalog",
+      "path": "/.well-known/api-catalog",
+      "format": "linkset",
+      "basis": "standard",
+      "reference": "https://www.rfc-editor.org/rfc/rfc9727",
+      "dimension": "act",
+      "optional": true
+    },
+    {
+      "kind": "openapi",
+      "path": "/openapi.json",
+      "format": "json",
+      "basis": "standard",
+      "reference": "https://spec.openapis.org/oas/v3.1.0",
+      "dimension": "act",
+      "optional": true
+    }
+  ],
+  "findings": {
+    "llms_txt_missing": {
+      "dimension": "find",
+      "severity": "info"
+    },
+    "llms_txt_malformed": {
+      "dimension": "find",
+      "severity": "warning"
+    },
+    "llms_txt_broken_links": {
+      "dimension": "find",
+      "severity": "warning"
+    },
+    "llms_full_txt_malformed": {
+      "dimension": "understand",
+      "severity": "info"
+    },
+    "ai_txt_malformed": {
+      "dimension": "understand",
+      "severity": "info"
+    },
+    "ai_json_malformed": {
+      "dimension": "understand",
+      "severity": "warning"
+    },
+    "ai_json_inconsistent": {
+      "dimension": "understand",
+      "severity": "warning"
+    },
+    "business_actions_malformed": {
+      "dimension": "act",
+      "severity": "warning"
+    },
+    "business_actions_inconsistent": {
+      "dimension": "act",
+      "severity": "warning"
+    },
+    "mcp_declaration_malformed": {
+      "dimension": "act",
+      "severity": "warning"
+    },
+    "mcp_declared_unverified": {
+      "dimension": "act",
+      "severity": "info"
+    },
+    "mcp_endpoint_unreachable": {
+      "dimension": "act",
+      "severity": "warning"
+    },
+    "api_catalog_malformed": {
+      "dimension": "act",
+      "severity": "warning"
+    },
+    "openapi_malformed": {
+      "dimension": "act",
+      "severity": "warning"
+    },
+    "sitemap_missing": {
+      "dimension": "find",
+      "severity": "warning"
+    },
+    "sitemap_malformed": {
+      "dimension": "find",
+      "severity": "warning"
+    },
+    "robots_blocks_ai_agents": {
+      "dimension": "find",
+      "severity": "info"
+    },
+    "machine_resource_unsafe": {
+      "dimension": "find",
+      "severity": "critical"
+    },
+    "machine_resource_wrong_origin": {
+      "dimension": "find",
+      "severity": "warning"
+    }
+  }
+}
