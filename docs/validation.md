@@ -1,7 +1,24 @@
-# Initial validation
+# Validation
 
-Validated locally on Node.js 24 with npm: unit/integration tests, TypeScript, ESLint, and the Next.js production build. CI targets Node.js 22. Test coverage includes DNS pinning/rebinding, private URL validation, redirects, compressed expansion, robots restrictions, extraction, evidence references, request cancellation, slot release, provider failure/output limits, and exports.
+Run on Node.js 22 with npm: `npm test` (unit and integration, including the
+shared contract fixtures and an end-to-end audit of a fictional site through a
+mocked transport), `npm run typecheck`, `npm run lint`, `npm run build`, and
+`npx playwright test` (desktop 1440px, tablet 768px, mobile 375px and narrow
+320px; light and dark mode; keyboard-only audit; export; overflow checks).
+The Playwright report test streams `tests/fixtures/morrow-report.json`, which
+an integration test keeps identical to current auditor output
+(`WRITE_REPORT_FIXTURE=1 npx vitest run tests/integration/audit-run.test.ts`
+regenerates it).
 
-Not verified locally: Chromium UI tests (the browser download returned an invalid ZIP and the local dev server reported an unavailable network-interface syscall), Docker build/start (Docker is unavailable), and a live paid AI provider (no model credentials configured). The CI workflow includes Chromium tests but its remote outcome must be inspected independently.
+Test coverage includes DNS pinning/rebinding, private URL validation,
+redirects, compressed expansion, robots restrictions (a single robots.txt
+download per origin), soft-404 HTML at machine-readable paths, malformed JSON,
+XML and OpenAPI, Linkset validation, secret redaction, prompt-injection text in
+resources, bounded link checks, MCP endpoint probing without tool calls,
+cancellation, multilingual action recognition with false-positive guards,
+report migration, evidence references, slot release, provider failure, and
+exports.
 
-This initial release uses native Node HTTP(S) with a pinned DNS lookup rather than Undici. Robots decisions are cached per URL during an audit; robots files can be fetched more than once per origin. All such downloads share the audit budget. Operational and service-area checks inspect structured metadata and do not claim full natural-language understanding.
+Not verified here: Docker build/start, a live paid AI provider, and some third
+party sites that rate-limit unknown clients (SiteLens reports their robots
+policy as unknown and fetches nothing else).

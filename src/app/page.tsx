@@ -11,8 +11,11 @@ export default function Home() {
     <main className="shell">
       <header className="topbar">
         <Link className="brand" href="/" aria-label="SiteLens home">
-          <span className="lens">◉</span> SiteLens
-          <span className="byline">BY INFOHOLDER</span>
+          <span className="lens" aria-hidden="true">
+            ◉
+          </span>{" "}
+          SiteLens
+          <span className="byline">OPEN SOURCE</span>
         </Link>
         <a
           className="source-link"
@@ -20,26 +23,26 @@ export default function Home() {
           target="_blank"
           rel="noreferrer"
         >
-          Open source <span aria-hidden="true">↗</span>
+          GitHub <span aria-hidden="true">↗</span>
         </a>
       </header>
       <section className="hero">
         <div className="eyebrow">
-          <span className="dot" /> A CLEARER VIEW OF YOUR WEBSITE
+          <span className="dot" /> AI DISCOVERABILITY &amp; AGENT READINESS
         </div>
         <h1>
-          Can they read it?
-          <br />
-          <span>Can customers act?</span>
+          See what search engines and AI agents
+          <span> can actually understand about your website.</span>
         </h1>
         <p className="intro">
-          See what a crawler can read, what your business makes clear, and where
-          the next step gets lost.
+          SiteLens reads your public pages and machine-readable files the way a
+          crawler would, then shows what it found, the evidence behind every
+          finding, and the next step a customer can take.
         </p>
         <div className="tags">
           <span>Evidence, not guesswork</span>
           <span>No account needed</span>
-          <span>Your site stays untouched</span>
+          <span>Read-only: your site stays untouched</span>
         </div>
       </section>
       <AuditForm aiEnabled={aiEnabled} />
@@ -47,18 +50,18 @@ export default function Home() {
         {[
           [
             "01",
-            "Read",
-            "Public pages, crawl rules, and content that can actually be retrieved.",
+            "AI can find it",
+            "Crawl rules, sitemap, canonical addresses and discovery files such as llms.txt.",
           ],
           [
             "02",
-            "Understand",
-            "Business information and structured content. Optional AI explains the evidence.",
+            "AI can understand it",
+            "Who you are, what you offer and where: titles, descriptions, structured data and AI profiles.",
           ],
           [
             "03",
-            "Act",
-            "Contact and customer action links that give visitors somewhere to go next.",
+            "AI can act on it",
+            "Contact and booking links, business action lists and declared agent connections. Declared, not executed.",
           ],
         ].map(([n, title, text]) => (
           <article key={n}>
@@ -69,11 +72,22 @@ export default function Home() {
         ))}
       </section>
       <footer>
-        <span>Infoholder SiteLens · Open source by Infoholder Studio</span>
-        <p>
-          A readiness check is not a ranking, indexing, or AI citation
-          guarantee.
-        </p>
+        <div>
+          <span>SiteLens · MIT-licensed, by Infoholder</span>
+          <p>
+            A readiness check is not a ranking, indexing, or AI citation
+            guarantee.
+          </p>
+        </div>
+        <nav aria-label="Related links" className="footer-links">
+          <a href="https://www.infoholder.io/app-studio/en/tools/site-check">
+            Free hosted website check
+          </a>
+          <span className="footer-group" aria-label="For agents">
+            For agents: <a href="/llms.txt">llms.txt</a> ·{" "}
+            <a href="/ai.txt">ai.txt</a> · <a href="/ai.json">ai.json</a>
+          </span>
+        </nav>
       </footer>
     </main>
   );

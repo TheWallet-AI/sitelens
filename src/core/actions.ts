@@ -10,7 +10,12 @@
  * Malay. CJK terms have no word boundaries, so the list uses specific
  * compounds ("预约", not "约").
  */
-export const ACTION_KINDS = ["booking", "order", "register", "enquiry"] as const;
+export const ACTION_KINDS = [
+  "booking",
+  "order",
+  "register",
+  "enquiry",
+] as const;
 export type ActionKind = (typeof ACTION_KINDS)[number];
 
 const PATTERNS: Record<ActionKind, RegExp> = {

@@ -9,13 +9,15 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
     [message, setMessage] = useState(""),
     [error, setError] = useState(""),
     [report, setReport] = useState<AuditReport | null>(null),
-    [warnings, setWarnings] = useState<string[]>([]);
+    [warnings, setWarnings] = useState<string[]>([]),
+    [progress, setProgress] = useState({ pages: 0, files: 0 });
   const abort = useRef<AbortController | null>(null);
   async function submit(event: React.FormEvent) {
     event.preventDefault();
     setError("");
     setReport(null);
     setWarnings([]);
+    setProgress({ pages: 0, files: 0 });
     let parsed: URL;
     try {
       parsed = new URL(url);
@@ -49,14 +51,20 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
         } else if (event.type === "warning")
           setWarnings((w) => [...w, event.message]);
         else if (event.type === "error") throw new Error(event.message);
-        else setMessage(event.message);
+        else if (event.type === "page") {
+          setProgress((p) => ({ ...p, pages: p.pages + 1 }));
+          setMessage(event.message);
+        } else if (event.type === "resource") {
+          setProgress((p) => ({ ...p, files: p.files + 1 }));
+          setMessage(`Checked ${event.message}`);
+        } else setMessage(event.message);
       }
       if (!complete)
         throw new Error("The audit ended before a report was received.");
     } catch (e) {
       setError(
         controller.signal.aborted
-          ? "Audit cancelled."
+          ? "Analysis cancelled."
           : e instanceof Error
             ? e.message
             : "The audit could not complete.",
@@ -70,7 +78,7 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
     <>
       <section className="audit-card">
         <div className="card-heading">
-          <h2>Take a closer look.</h2>
+          <h2>Analyze a website</h2>
           <span className="mode">
             {aiEnabled ? "AI + core checks" : "Core checks"}
           </span>
@@ -89,12 +97,13 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
               autoComplete="url"
             />
             <button disabled={busy} type="submit">
-              {busy ? "Checking…" : "Check my website"}{" "}
+              {busy ? "Analyzing…" : "Analyze a website"}{" "}
               <span aria-hidden="true">↗</span>
             </button>
           </div>
           <p className="scope">
-            Up to 5 public pages · Usually under 90 seconds · No forms submitted
+            Up to 5 public pages and 11 machine-readable files · Usually under
+            90 seconds · Read-only: no forms, sign-in or transactions
           </p>
           <p className="privacy">
             {aiEnabled
@@ -105,8 +114,12 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
           </p>
         </form>
         {busy && (
-          <button className="secondary" onClick={() => abort.current?.abort()}>
-            Cancel audit
+          <button
+            type="button"
+            className="secondary cancel"
+            onClick={() => abort.current?.abort()}
+          >
+            Cancel analysis
           </button>
         )}
         <div
@@ -114,8 +127,18 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
           aria-live="polite"
           className={busy ? "progress" : "status"}
         >
-          {busy && <span className="spinner" />}
-          {message}
+          {busy && <span className="spinner" aria-hidden="true" />}
+          <span>
+            {message}
+            {busy && (progress.pages > 0 || progress.files > 0) && (
+              <span className="progress-count">
+                {" "}
+                · {progress.pages} page{progress.pages === 1 ? "" : "s"},{" "}
+                {progress.files} file
+                {progress.files === 1 ? "" : "s"}
+              </span>
+            )}
+          </span>
         </div>
         {error && (
           <p role="alert" className="error">

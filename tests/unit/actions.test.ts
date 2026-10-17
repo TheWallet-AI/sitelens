@@ -1,5 +1,9 @@
 import { test, expect } from "vitest";
-import { isContactLink, isNextStepLink, linkActions } from "../../src/core/actions";
+import {
+  isContactLink,
+  isNextStepLink,
+  linkActions,
+} from "../../src/core/actions";
 
 const link = (text: string, url = "https://example.com/x") => ({ text, url });
 
@@ -28,18 +32,31 @@ test.each([
 });
 
 test("percent-encoded CJK paths are recognized", () => {
-  expect(linkActions(link("", "https://example.com/%E9%A2%84%E7%BA%A6"))).toContain("booking");
+  expect(
+    linkActions(link("", "https://example.com/%E9%A2%84%E7%BA%A6")),
+  ).toContain("booking");
 });
 
-test.each(["Facebook", "Notebook collection", "In order to help", "About us", "关于我们", "Our story", "Terms"])(
-  "no false positive for %s",
-  (text) => {
-    expect(isNextStepLink(link(text, "https://example.com/about"))).toBe(false);
-  },
-);
+test.each([
+  "Facebook",
+  "Notebook collection",
+  "In order to help",
+  "About us",
+  "关于我们",
+  "Our story",
+  "Terms",
+])("no false positive for %s", (text) => {
+  expect(isNextStepLink(link(text, "https://example.com/about"))).toBe(false);
+});
 
 test("contact cues in five languages", () => {
-  for (const text of ["Contact us", "联系我们", "聯絡我們", "お問い合わせ", "Hubungi kami"])
+  for (const text of [
+    "Contact us",
+    "联系我们",
+    "聯絡我們",
+    "お問い合わせ",
+    "Hubungi kami",
+  ])
     expect(isContactLink(link(text))).toBe(true);
   expect(isContactLink(link("", "mailto:hi@example.com"))).toBe(true);
   expect(isContactLink(link("Gallery"))).toBe(false);

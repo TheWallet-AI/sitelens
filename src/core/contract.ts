@@ -48,7 +48,11 @@ export const EVIDENCE_KINDS = [
 export type EvidenceKind = (typeof EVIDENCE_KINDS)[number];
 
 /** How far a machine can take a declared business action. */
-export const ACTION_REACH = ["not_available", "ai_readable", "ai_executable"] as const;
+export const ACTION_REACH = [
+  "not_available",
+  "ai_readable",
+  "ai_executable",
+] as const;
 export type ActionReach = (typeof ACTION_REACH)[number];
 
 export const SEVERITIES = ["critical", "warning", "info"] as const;
@@ -205,7 +209,10 @@ export const FINDING_CODES = {
   robots_blocks_ai_agents: { dimension: "find", severity: "info" },
   machine_resource_unsafe: { dimension: "find", severity: "critical" },
   machine_resource_wrong_origin: { dimension: "find", severity: "warning" },
-} as const satisfies Record<string, { dimension: ReadinessDimension; severity: Severity }>;
+} as const satisfies Record<
+  string,
+  { dimension: ReadinessDimension; severity: Severity }
+>;
 
 export type FindingCode = keyof typeof FINDING_CODES;
 

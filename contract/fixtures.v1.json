@@ -2,27 +2,208 @@
   "contract": "agent-readiness/1",
   "origin": "https://morrow-coffee.example.com",
   "cases": [
-    { "file": "llms.valid.md", "kind": "llms_txt", "contentType": "text/markdown", "state": "valid", "codes": [] },
-    { "file": "llms.missing-title.md", "kind": "llms_txt", "contentType": "text/plain", "state": "malformed", "codes": ["llms_txt_malformed"] },
-    { "file": "llms.unsafe-link.md", "kind": "llms_txt", "contentType": "text/plain", "state": "unsafe", "codes": ["machine_resource_unsafe"] },
-    { "file": "soft-404.html", "kind": "llms_txt", "contentType": "text/html", "state": "not_found", "codes": ["llms_txt_missing"] },
-    { "file": "soft-404.html", "kind": "ai_json", "contentType": "text/html", "state": "not_found", "codes": [] },
-    { "file": "ai.infoholder.valid.json", "kind": "ai_json", "contentType": "application/json", "state": "valid", "codes": [] },
-    { "file": "ai.wrong-origin.json", "kind": "ai_json", "contentType": "application/json", "state": "inconsistent", "codes": ["machine_resource_wrong_origin"] },
-    { "file": "ai.generic.json", "kind": "ai_json", "contentType": "application/json", "state": "valid", "codes": [] },
-    { "file": "secret.ai.txt", "kind": "ai_txt", "contentType": "text/plain", "state": "unsafe", "codes": ["machine_resource_unsafe"] },
-    { "file": "business-actions.valid.json", "kind": "business_actions", "contentType": "application/json", "state": "valid", "codes": [] },
-    { "file": "business-actions.malformed.json", "kind": "business_actions", "contentType": "application/json", "state": "malformed", "codes": ["business_actions_malformed"] },
-    { "file": "business-actions.cross-origin.json", "kind": "business_actions", "contentType": "application/json", "state": "inconsistent", "codes": ["business_actions_inconsistent"] },
-    { "file": "mcp-server-card.valid.json", "kind": "mcp_server_card", "contentType": "application/json", "state": "valid", "codes": ["mcp_declared_unverified"] },
-    { "file": "mcp-server-card.insecure.json", "kind": "mcp_server_card", "contentType": "application/json", "state": "malformed", "codes": ["mcp_declaration_malformed"] },
-    { "file": "api-catalog.valid.json", "kind": "api_catalog", "contentType": "application/linkset+json", "state": "valid", "codes": [] },
-    { "file": "api-catalog.invalid.json", "kind": "api_catalog", "contentType": "application/linkset+json", "state": "malformed", "codes": ["api_catalog_malformed"] },
-    { "file": "openapi.valid.json", "kind": "openapi", "contentType": "application/json", "state": "valid", "codes": [] },
-    { "file": "openapi.broken.json", "kind": "openapi", "contentType": "application/json", "state": "malformed", "codes": ["openapi_malformed"] },
-    { "file": "sitemap.valid.xml", "kind": "sitemap_xml", "contentType": "application/xml", "state": "valid", "codes": [] },
-    { "file": "sitemap.localhost.xml", "kind": "sitemap_xml", "contentType": "application/xml", "state": "inconsistent", "codes": ["machine_resource_wrong_origin"] },
-    { "file": "sitemap.malformed.xml", "kind": "sitemap_xml", "contentType": "application/xml", "state": "malformed", "codes": ["sitemap_malformed"] },
-    { "file": "robots.blocks-ai.txt", "kind": "robots_txt", "contentType": "text/plain", "state": "valid", "codes": ["robots_blocks_ai_agents"] }
+    {
+      "file": "llms.valid.md",
+      "kind": "llms_txt",
+      "contentType": "text/markdown",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "llms.missing-title.md",
+      "kind": "llms_txt",
+      "contentType": "text/plain",
+      "state": "malformed",
+      "codes": [
+        "llms_txt_malformed"
+      ]
+    },
+    {
+      "file": "llms.unsafe-link.md",
+      "kind": "llms_txt",
+      "contentType": "text/plain",
+      "state": "unsafe",
+      "codes": [
+        "machine_resource_unsafe"
+      ]
+    },
+    {
+      "file": "soft-404.html",
+      "kind": "llms_txt",
+      "contentType": "text/html",
+      "state": "not_found",
+      "codes": [
+        "llms_txt_missing"
+      ]
+    },
+    {
+      "file": "soft-404.html",
+      "kind": "ai_json",
+      "contentType": "text/html",
+      "state": "not_found",
+      "codes": []
+    },
+    {
+      "file": "ai.infoholder.valid.json",
+      "kind": "ai_json",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "ai.wrong-origin.json",
+      "kind": "ai_json",
+      "contentType": "application/json",
+      "state": "inconsistent",
+      "codes": [
+        "machine_resource_wrong_origin"
+      ]
+    },
+    {
+      "file": "ai.generic.json",
+      "kind": "ai_json",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "secret.ai.txt",
+      "kind": "ai_txt",
+      "contentType": "text/plain",
+      "state": "unsafe",
+      "codes": [
+        "machine_resource_unsafe"
+      ]
+    },
+    {
+      "file": "business-actions.valid.json",
+      "kind": "business_actions",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "business-actions.malformed.json",
+      "kind": "business_actions",
+      "contentType": "application/json",
+      "state": "malformed",
+      "codes": [
+        "business_actions_malformed"
+      ]
+    },
+    {
+      "file": "business-actions.cross-origin.json",
+      "kind": "business_actions",
+      "contentType": "application/json",
+      "state": "inconsistent",
+      "codes": [
+        "business_actions_inconsistent"
+      ]
+    },
+    {
+      "file": "mcp-server-card.valid.json",
+      "kind": "mcp_server_card",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": [
+        "mcp_declared_unverified"
+      ]
+    },
+    {
+      "file": "mcp-server-card.insecure.json",
+      "kind": "mcp_server_card",
+      "contentType": "application/json",
+      "state": "malformed",
+      "codes": [
+        "mcp_declaration_malformed"
+      ]
+    },
+    {
+      "file": "api-catalog.valid.json",
+      "kind": "api_catalog",
+      "contentType": "application/linkset+json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "api-catalog.invalid.json",
+      "kind": "api_catalog",
+      "contentType": "application/linkset+json",
+      "state": "malformed",
+      "codes": [
+        "api_catalog_malformed"
+      ]
+    },
+    {
+      "file": "openapi.valid.json",
+      "kind": "openapi",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "openapi.broken.json",
+      "kind": "openapi",
+      "contentType": "application/json",
+      "state": "malformed",
+      "codes": [
+        "openapi_malformed"
+      ]
+    },
+    {
+      "file": "sitemap.valid.xml",
+      "kind": "sitemap_xml",
+      "contentType": "application/xml",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "sitemap.localhost.xml",
+      "kind": "sitemap_xml",
+      "contentType": "application/xml",
+      "state": "inconsistent",
+      "codes": [
+        "machine_resource_wrong_origin"
+      ]
+    },
+    {
+      "file": "sitemap.malformed.xml",
+      "kind": "sitemap_xml",
+      "contentType": "application/xml",
+      "state": "malformed",
+      "codes": [
+        "sitemap_malformed"
+      ]
+    },
+    {
+      "file": "robots.blocks-ai.txt",
+      "kind": "robots_txt",
+      "contentType": "text/plain",
+      "state": "valid",
+      "codes": [
+        "robots_blocks_ai_agents"
+      ]
+    },
+    {
+      "file": "infoholder-morrow-llms.md",
+      "kind": "llms_txt",
+      "contentType": "text/markdown",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "infoholder-morrow-ai.json",
+      "kind": "ai_json",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "infoholder-morrow-business-actions.json",
+      "kind": "business_actions",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    }
   ]
 }

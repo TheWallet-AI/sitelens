@@ -5,16 +5,26 @@
  * excerpt SiteLens stores, so a report never repeats the secret it found.
  */
 const PATTERNS: { label: string; pattern: RegExp }[] = [
-  { label: "private key", pattern: /-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/g },
-  { label: "Stripe secret key", pattern: /\b(?:sk|rk)_live_[0-9A-Za-z]{16,}\b/g },
-  { label: "OpenAI-style API key", pattern: /\bsk-(?:proj-)?[A-Za-z0-9_-]{32,}\b/g },
+  {
+    label: "private key",
+    pattern: /-----BEGIN (?:RSA |EC |OPENSSH |DSA )?PRIVATE KEY-----/g,
+  },
+  {
+    label: "Stripe secret key",
+    pattern: /\b(?:sk|rk)_live_[0-9A-Za-z]{16,}\b/g,
+  },
+  {
+    label: "OpenAI-style API key",
+    pattern: /\bsk-(?:proj-)?[A-Za-z0-9_-]{32,}\b/g,
+  },
   { label: "AWS access key", pattern: /\bAKIA[0-9A-Z]{16}\b/g },
   { label: "GitHub token", pattern: /\bgh[pousr]_[A-Za-z0-9]{36,}\b/g },
   { label: "Slack token", pattern: /\bxox[abprs]-[A-Za-z0-9-]{10,}\b/g },
   { label: "Google API key", pattern: /\bAIza[0-9A-Za-z_-]{35}\b/g },
   {
     label: "JSON Web Token",
-    pattern: /\beyJ[A-Za-z0-9_-]{8,}\.eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/g,
+    pattern:
+      /\beyJ[A-Za-z0-9_-]{8,}\.eyJ[A-Za-z0-9_-]{8,}\.[A-Za-z0-9_-]{8,}\b/g,
   },
   {
     label: "internal address",

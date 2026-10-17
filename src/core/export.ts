@@ -59,7 +59,9 @@ export function exportReportMarkdown(report: AuditReport): string {
     ),
     "## Optional services",
     ...(report.recommendations.length
-      ? report.recommendations.map((r) => `${safeMarkdown(r.reason)}\n${safeMarkdown(r.url)}`)
+      ? report.recommendations.map(
+          (r) => `${safeMarkdown(r.reason)}\n${safeMarkdown(r.url)}`,
+        )
       : ["None."]),
     "## Limitations",
     ...report.limitations.map((l) => `- ${safeMarkdown(l)}`),
