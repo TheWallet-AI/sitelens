@@ -1,15 +1,24 @@
 import type { AuditInput, CrawlResult, PageRecord } from "../../core/schema";
 import { LIMITS } from "../../core/limits";
 import { safeFetch, DownloadBudget } from "./transport";
-import { checkRobots } from "./robots";
+import { checkRobots, type RobotsCache } from "./robots";
 import { extractPage } from "./extract";
 import { validatePublicUrl } from "./url-policy";
+import { isContactLink, isNextStepLink } from "../../core/actions";
 export async function crawlSite(
   input: AuditInput,
-  options: { signal: AbortSignal; onPage: (page: PageRecord) => void },
+  options: {
+    signal: AbortSignal;
+    onPage: (page: PageRecord) => void;
+    /** Shared with the resource phase so both draw on one download budget. */
+    budget?: DownloadBudget;
+    /** Shared robots.txt downloads (one per origin per audit). */
+    robots?: RobotsCache;
+  },
 ): Promise<CrawlResult> {
   const entry = validatePublicUrl(input.url);
-  const budget = new DownloadBudget();
+  const budget = options.budget ?? new DownloadBudget();
+  const robots: RobotsCache = options.robots ?? new Map();
   const result: CrawlResult = {
     pages: [],
     evidence: [],
@@ -25,7 +34,7 @@ export async function crawlSite(
   const policy = (url: URL) => {
     let p = policyCache.get(url.href);
     if (!p) {
-      p = checkRobots(url, { signal: options.signal, budget });
+      p = checkRobots(url, { signal: options.signal, budget, cache: robots });
       policyCache.set(url.href, p);
     }
     return p;
@@ -75,16 +84,8 @@ export async function crawlSite(
         result.coverage.truncated = true;
         throw new Error("Evidence character budget exhausted.");
       }
-      const contact = parsed.links.find(
-        (l) =>
-          /^(mailto:|tel:)/.test(l.url) ||
-          /contact/i.test(l.url + " " + l.text),
-      );
-      const action = parsed.links.find((l) =>
-        /book|reserv|register|enquir|inquir|order|appointment/i.test(
-          l.url + " " + l.text,
-        ),
-      );
+      const contact = parsed.links.find(isContactLink);
+      const action = parsed.links.find(isNextStepLink);
       const metadata = JSON.stringify(
         {
           title: parsed.title.slice(0, 500),
@@ -144,7 +145,11 @@ export async function crawlSite(
     const origin = new URL(result.finalUrl).origin;
     const seen = new Set([entry.href, result.finalUrl]);
     const priority = (text: string) =>
-      /about|service|contact|faq/i.test(text) ? 0 : 1;
+      /about|service|contact|faq|menu|pricing|关于|服务|联系|關於|服務|聯絡|会社概要|サービス|お問い合わせ|tentang|perkhidmatan|hubungi/i.test(
+        text,
+      )
+        ? 0
+        : 1;
     const targets = home.links
       .filter((link) => {
         try {

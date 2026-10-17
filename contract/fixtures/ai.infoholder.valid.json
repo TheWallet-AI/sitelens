@@ -1,0 +1,20 @@
+{
+  "spec": "infoholder-ai-json/1",
+  "name": "Morrow Coffee (demo business)",
+  "url": "https://morrow-coffee.example.com",
+  "description": "Fictional neighbourhood cafe used to demonstrate SiteLens.",
+  "status": "live",
+  "generatedAt": "2026-10-17T00:00:00.000Z",
+  "generator": "Infoholder Studio",
+  "resources": [
+    { "kind": "llms_txt", "url": "https://morrow-coffee.example.com/llms.txt" },
+    { "kind": "business_actions", "url": "https://morrow-coffee.example.com/.well-known/business-actions.json" },
+    { "kind": "sitemap_xml", "url": "https://morrow-coffee.example.com/sitemap.xml" }
+  ],
+  "capabilities": [
+    { "type": "reservation", "url": "https://morrow-coffee.example.com/reservations", "reach": "ai_readable" }
+  ],
+  "limitations": [
+    "Live prices, availability and stock are not included in this file."
+  ]
+}

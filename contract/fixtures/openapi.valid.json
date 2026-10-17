@@ -1,0 +1,6 @@
+{
+  "openapi": "3.1.0",
+  "info": { "title": "Morrow Coffee public API", "version": "1.0.0" },
+  "servers": [ { "url": "https://morrow-coffee.example.com/api" } ],
+  "paths": { "/menu": { "get": { "responses": { "200": { "description": "Menu" } } } } }
+}

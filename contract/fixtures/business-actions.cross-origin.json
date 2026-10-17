@@ -1,0 +1,5 @@
+{
+  "version": 1,
+  "business": { "name": "Morrow Coffee", "url": "https://morrow-coffee.example.com" },
+  "actions": [ { "type": "reservation", "url": "https://bookings.example.net/morrow", "reach": "ai_executable" } ]
+}

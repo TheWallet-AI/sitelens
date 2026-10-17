@@ -1,0 +1,6 @@
+{
+  "name": "morrow-coffee",
+  "version": "1.0.0",
+  "endpoints": { "streamableHttp": "https://morrow-coffee.example.com/_infoholder/mcp" },
+  "tools": [ { "name": "business_read" }, { "name": "menu_read" } ]
+}

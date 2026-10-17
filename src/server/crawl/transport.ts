@@ -58,13 +58,21 @@ export async function safeFetch(
     allowedOrigin?: string;
     entryHost?: string;
     beforeRedirect?: (url: URL) => Promise<void>;
+    /** Accept header. Defaults to HTML and plain text. */
+    accept?: string;
+    /** Decoded byte cap for this response. Defaults to LIMITS.pageBytes. */
+    maxBytes?: number;
+    /** Per-request deadline. Defaults to LIMITS.requestMs. */
+    requestMs?: number;
+    /** Return status and headers only; the body is never read. */
+    discardBody?: boolean;
   },
 ): Promise<FetchResult> {
   let url = validatePublicUrl(input.href);
   const redirects: string[] = [];
   const signal = AbortSignal.any([
     options.signal,
-    AbortSignal.timeout(LIMITS.requestMs),
+    AbortSignal.timeout(options.requestMs ?? LIMITS.requestMs),
   ]);
   for (let hop = 0; hop <= LIMITS.redirects; hop++) {
     signal.throwIfAborted();
@@ -100,7 +108,7 @@ export async function safeFetch(
             maxHeaderSize: 16384,
             headers: {
               "user-agent": "SiteLens/0.1",
-              accept: "text/html,text/plain;q=0.9",
+              accept: options.accept ?? "text/html,text/plain;q=0.9",
               "accept-encoding": "gzip, deflate, br",
             },
             lookup: (_host, opts, callback) =>
@@ -136,6 +144,16 @@ export async function safeFetch(
       url = next;
       continue;
     }
+    const headers = Object.fromEntries(
+      Object.entries(response.headers).map(([k, v]) => [
+        k,
+        Array.isArray(v) ? v.join(", ") : (v ?? ""),
+      ]),
+    );
+    if (options.discardBody) {
+      response.destroy();
+      return { finalUrl: url.href, status, headers, body: "", redirects };
+    }
     const encoding = response.headers["content-encoding"];
     let stream: Readable = response;
     if (encoding) {
@@ -155,12 +173,10 @@ export async function safeFetch(
       stream = response.pipe(decoder);
     }
     try {
-      const body = await readBounded(stream, options.budget, LIMITS.pageBytes);
-      const headers = Object.fromEntries(
-        Object.entries(response.headers).map(([k, v]) => [
-          k,
-          Array.isArray(v) ? v.join(", ") : (v ?? ""),
-        ]),
+      const body = await readBounded(
+        stream,
+        options.budget,
+        options.maxBytes ?? LIMITS.pageBytes,
       );
       return {
         finalUrl: url.href,

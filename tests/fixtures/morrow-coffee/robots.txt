@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://morrow-coffee.example.com/sitemap.xml
