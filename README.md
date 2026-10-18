@@ -8,7 +8,7 @@ An open-source, evidence-based auditor of AI discoverability and agent readiness
 
 Use the [Infoholder free website checker](https://www.infoholder.io/app-studio/en/tools/site-check) in your browser, or self-host SiteLens using the instructions below.
 
-The Infoholder tool and this open-source project may offer different features as they evolve. The link does not imply that the hosted tool runs this exact version of SiteLens.
+The hosted checker needs no setup and uses the same [agent-readiness contract](docs/agent-readiness-contract.md). On top of the checks here it adds a score, more SEO checks (Open Graph, language tags, image text alternatives, sitemap freshness, search versus training crawler rules), reports in five languages and an optional AI reading that needs no key of your own. It is a separate implementation and may run a different version than this repository. Reports from a self-hosted SiteLens are never sent to it.
 
 ## Features
 
