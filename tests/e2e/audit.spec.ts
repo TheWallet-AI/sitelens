@@ -96,6 +96,13 @@ test("keyboard-only audit renders the report with findings, files and exports", 
   await expect(
     page.locator("tr[data-resource='mcp_server_card'] .state"),
   ).toHaveText("Not published");
+  // The hosted checker is offered after the report; no report data goes into the link.
+  await expect(
+    page.getByRole("link", { name: /Open the free website checker/ }),
+  ).toHaveAttribute(
+    "href",
+    "https://www.infoholder.io/app-studio/en/tools/site-check",
+  );
   const download = page.waitForEvent("download");
   await page.getByRole("button", { name: "Download JSON" }).click();
   expect((await download).suggestedFilename()).toBe(

@@ -480,8 +480,14 @@ export function validateBusinessActions(
 /** Endpoint-looking URLs in common MCP discovery shapes. */
 function mcpEndpoints(doc: Record<string, unknown>, base: string): string[] {
   const out: string[] = [];
+  // Only fully written http(s) URLs count. Resolving "streamable-http" (the
+  // transport type) as a relative reference produced a fake endpoint that
+  // then returned 404, so a correct declaration was reported unreachable.
   const push = (v: unknown) => {
-    const url = absolute(v, base);
+    const url =
+      typeof v === "string" && /^https?:\/\//i.test(v.trim())
+        ? absolute(v, base)
+        : null;
     if (url && !out.includes(url)) out.push(url);
   };
   push(doc.url);

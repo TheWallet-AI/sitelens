@@ -12,6 +12,9 @@ import {
   STATUS_LABELS,
 } from "../core/labels";
 
+/** Infoholder's hosted checker. No report data is put in the link. */
+const HOSTED_CHECK = "https://www.infoholder.io/app-studio/en/tools/site-check";
+
 const STATUS_ICON: Record<Check["status"], string> = {
   pass: "✓",
   warning: "!",
@@ -370,6 +373,19 @@ export default function AuditReportView({ report }: { report: AuditReport }) {
           ))}
         </ul>
       </section>
+
+      <aside className="hosted-check block" aria-labelledby="hosted-check">
+        <h3 id="hosted-check">Prefer a hosted check?</h3>
+        <p>
+          Infoholder&apos;s free website checker uses the same agent-readiness
+          contract with no setup, and adds a score, more SEO checks, reports in
+          five languages and an optional AI reading that needs no key of your
+          own. This report is not sent there.
+        </p>
+        <a href={HOSTED_CHECK} target="_blank" rel="noreferrer">
+          Open the free website checker <span aria-hidden="true">↗</span>
+        </a>
+      </aside>
     </section>
   );
 }

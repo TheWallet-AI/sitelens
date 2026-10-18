@@ -204,3 +204,26 @@ test("malformed XML-ish sitemaps are rejected without throwing", () => {
     ).state,
   ).toBe("malformed");
 });
+
+test("a transport type is not an endpoint; only absolute http(s) URLs are", () => {
+  const verdict = validateResource(
+    "mcp_server_card",
+    {
+      status: 200,
+      contentType: "application/json",
+      body: JSON.stringify({
+        transport: {
+          type: "streamable-http",
+          url: "https://example.com/_infoholder/mcp",
+        },
+        endpoints: { streamableHttp: "https://example.com/_infoholder/mcp" },
+      }),
+      finalUrl: "https://example.com/.well-known/mcp/server-card.json",
+    },
+    "https://example.com/",
+  );
+  expect(verdict.state).toBe("valid");
+  expect(verdict.declared.endpoints).toEqual([
+    "https://example.com/_infoholder/mcp",
+  ]);
+});
