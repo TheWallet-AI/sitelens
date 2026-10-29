@@ -17,7 +17,7 @@ export async function POST(request: Request): Promise<Response> {
       { error: "Cross-origin requests are not allowed." },
       { status: 403 },
     );
-  let input: { url: string };
+  let input: { url: string; mode: "page" | "site" };
   try {
     const reader = request.body?.getReader();
     if (!reader)
@@ -42,7 +42,15 @@ export async function POST(request: Request): Promise<Response> {
     const value = JSON.parse(Buffer.concat(parts).toString());
     if (typeof value.url !== "string" || value.url.length > 2048)
       throw new Error("Invalid URL.");
-    input = { url: validatePublicUrl(value.url).href };
+    const url = validatePublicUrl(value.url);
+    // Without a choice, a homepage checks the site and a specific page checks that page.
+    const mode =
+      value.mode === "page" || value.mode === "site"
+        ? value.mode
+        : url.pathname === "/" && !url.search
+          ? "site"
+          : "page";
+    input = { url: url.href, mode };
   } catch {
     return Response.json(
       { error: "Enter a public HTTP(S) website URL." },

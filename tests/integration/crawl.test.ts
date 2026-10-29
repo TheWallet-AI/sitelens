@@ -111,3 +111,78 @@ test("enforces exact per-page and total evidence character limits", async () => 
   ).toBeLessThanOrEqual(40000);
   expect(result.coverage.truncated).toBe(true);
 });
+test("page mode reads only the input page, including a deep path", async () => {
+  vi.mocked(safeFetch).mockImplementation(async (url) => ({
+    finalUrl: url.href,
+    status: 200,
+    headers: { "content-type": "text/html" },
+    body: '<main>Studio AD Nail &amp; Lash</main><a href="/circle/en">Circle</a><a href="/book">Book</a>',
+    redirects: [],
+  }));
+  const entry =
+    "https://infoholder.io/circle/en/m/studio-ad-nail-lash-4wd5tyh3";
+  const r = await crawlSite(
+    { url: entry, mode: "page" },
+    { signal: new AbortController().signal, onPage: () => {} },
+  );
+  expect(r.pages.map((p) => [p.url, p.role, p.read])).toEqual([
+    [entry, "entry", "content"],
+  ]);
+  expect(safeFetch).toHaveBeenCalledTimes(1);
+  expect(r.coverage.notes.join(" ")).toContain("Only the input page");
+});
+test("site mode covers different purposes before language versions of the same page", async () => {
+  const locales = ["en", "zh-HK", "jp", "ms", "zh"];
+  const nav = ["", "/pricing", "/solutions"]
+    .flatMap((path) =>
+      locales.map((l) => `<a href="/app-studio/${l}${path}">${l}${path}</a>`),
+    )
+    .join("");
+  vi.mocked(safeFetch).mockImplementation(async (url) => ({
+    finalUrl: url.href,
+    status: 200,
+    headers: { "content-type": "text/html" },
+    body: `<html><head><link rel="alternate" hreflang="ja" href="/app-studio/jp"></head><body><main>Content for ${url.pathname}</main>${nav}</body></html>`,
+    redirects: [],
+  }));
+  const r = await crawlSite(
+    { url: "https://infoholder.io/app-studio/en", mode: "site" },
+    { signal: new AbortController().signal, onPage: () => {} },
+  );
+  const urls = r.pages.map((p) => new URL(p.url).pathname);
+  expect(urls).toContain("/app-studio/en/pricing");
+  expect(urls).toContain("/app-studio/en/solutions");
+  expect(
+    r.pages.filter((p) => p.purpose === "language_variant").length,
+  ).toBeLessThanOrEqual(1);
+  expect(
+    r.coverage.notSampled?.some((s) => s.reason === "language_variant"),
+  ).toBe(true);
+});
+test("robots-disallowed pages are recorded as skipped, not as failures", async () => {
+  vi.mocked(checkRobots).mockResolvedValueOnce({
+    status: "disallowed",
+    reason: "Robots policy disallows SiteLens.",
+  });
+  const r = await crawlSite(
+    { url: "https://draft.example.com" },
+    { signal: new AbortController().signal, onPage: () => {} },
+  );
+  expect(r.pages[0]).toMatchObject({
+    read: "skipped",
+    skipReason: "robots",
+    role: "entry",
+  });
+  vi.mocked(checkRobots).mockResolvedValueOnce({
+    status: "unknown",
+    reason: "Robots policy is unavailable; this page was skipped.",
+  });
+  const unknown = await crawlSite(
+    { url: "https://flaky.example.com" },
+    { signal: new AbortController().signal, onPage: () => {} },
+  );
+  expect(unknown.pages[0]).toMatchObject({
+    read: "skipped",
+    skipReason: "robots_unavailable",
+  });
+});

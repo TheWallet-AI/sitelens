@@ -55,6 +55,70 @@ export const ACTION_REACH = [
 ] as const;
 export type ActionReach = (typeof ACTION_REACH)[number];
 
+/**
+ * How far the evidence goes for a customer action (booking, ordering,
+ * registering, enquiring). Each level is a separate claim: a link is only an
+ * entry point, a site's own declaration is not verification, a read-only
+ * query is not a completed flow, and a test-environment flow is not a
+ * production verification. Public audits can only reach the first two.
+ */
+export const ACTION_EVIDENCE_LEVELS = [
+  "unknown",
+  "entry_found",
+  "declared",
+  "read_verified",
+  "test_flow_verified",
+  "production_verified",
+] as const;
+export type ActionEvidenceLevel = (typeof ACTION_EVIDENCE_LEVELS)[number];
+
+/**
+ * Source of one AI-written claim. "unknown" means not found on the pages
+ * read (not "absent from the business"); "unverifiable" means public pages
+ * cannot settle it (for example whether a booking request is confirmed).
+ */
+export const CLAIM_STATES = [
+  "supported",
+  "interpretation",
+  "unknown",
+  "unverifiable",
+] as const;
+export type ClaimState = (typeof CLAIM_STATES)[number];
+
+/** "page" reads only the input page; "site" also samples a bounded set of related pages. */
+export const CHECK_MODES = ["page", "site"] as const;
+export type CheckMode = (typeof CHECK_MODES)[number];
+
+/** What an audit did with one page: read its text, checked its status only, did not open it, or got no response. */
+export const PAGE_READ_STATES = [
+  "content",
+  "status",
+  "skipped",
+  "failed",
+] as const;
+export type PageReadState = (typeof PAGE_READ_STATES)[number];
+
+/** Why a page was not opened. Public audits follow robots.txt. */
+export const PAGE_SKIP_REASONS = [
+  "robots",
+  "robots_unavailable",
+  "deadline",
+] as const;
+export type PageSkipReason = (typeof PAGE_SKIP_REASONS)[number];
+
+/** What a sampled page is for. Sampling covers different purposes before repeating one. */
+export const PAGE_PURPOSES = [
+  "home",
+  "services",
+  "pricing",
+  "contact",
+  "action",
+  "about",
+  "other",
+  "language_variant",
+] as const;
+export type PagePurpose = (typeof PAGE_PURPOSES)[number];
+
 export const SEVERITIES = ["critical", "warning", "info"] as const;
 export type Severity = (typeof SEVERITIES)[number];
 
@@ -224,6 +288,12 @@ export function contractDocument() {
     resourceStates: [...RESOURCE_STATES],
     evidenceKinds: [...EVIDENCE_KINDS],
     actionReach: [...ACTION_REACH],
+    actionEvidenceLevels: [...ACTION_EVIDENCE_LEVELS],
+    claimStates: [...CLAIM_STATES],
+    checkModes: [...CHECK_MODES],
+    pageReadStates: [...PAGE_READ_STATES],
+    pageSkipReasons: [...PAGE_SKIP_REASONS],
+    pagePurposes: [...PAGE_PURPOSES],
     severities: [...SEVERITIES],
     resourceBasis: [...RESOURCE_BASIS],
     resources: RESOURCE_KINDS.map((r) => ({ ...r })),

@@ -84,6 +84,46 @@ external agent can complete it end to end). An auditor can only ever report a
 site's _declared_ reach; it cannot verify execution without an explicitly
 authorized test environment.
 
+## Action evidence levels
+
+Added in SiteLens 0.3.0 (additive). For each customer action (booking,
+ordering, registering, enquiring), how far the evidence goes. Each level is a
+separate claim and none implies the next:
+
+- `entry_found` — a link or button for it exists on a page that was read.
+  It is an entry point only: nothing was submitted, so it does not show that
+  a request reaches the business, that a booking is confirmed, or that payment
+  works.
+- `declared` — the site's own action file (`business-actions.json`) lists it.
+  The site's self-reported reach does not raise the level.
+- `read_verified` — a read-only query returned a result (for example
+  available times); nothing was submitted.
+- `test_flow_verified` — the full flow ran end to end in a test environment.
+- `production_verified` — verified in production.
+- `unknown` — not established.
+
+Public audits can only report `entry_found` and `declared`.
+
+## Claim states
+
+Added in 0.3.0. AI-written claims carry one of `supported` (the cited evidence
+states it), `interpretation` (the AI's reading), `unknown` (not found on the
+pages read — not proof that the business lacks it) and `unverifiable` (public
+pages cannot settle it). Reports from 0.2 only use the first three.
+
+## Check modes and page records
+
+Added in 0.3.0. `checkModes`: `page` reads only the input page (plus the
+site-wide robots.txt, sitemap and machine-readable files); `site` also samples
+a bounded set of related pages. Sampling covers different `pagePurposes`
+(`home`, `services`, `pricing`, `contact`, `action`, `about`, `other`) before
+repeating one, and treats URLs that differ only by a language path segment,
+or that the entry page lists as hreflang alternates, as one page; one
+`language_variant` of the entry page may be read last when budget remains.
+`pageReadStates` (`content`, `status`, `skipped`, `failed`) say what happened
+to each page and `pageSkipReasons` (`robots`, `robots_unavailable`,
+`deadline`) why a page was not opened. Public audits follow robots.txt.
+
 ## Finding codes
 
 Each code has a default dimension and severity (`critical`, `warning`,

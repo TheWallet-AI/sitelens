@@ -353,7 +353,7 @@ export function runChecks(
       "next-step",
       "actions",
       pages.some(nextStepOn),
-      `A customer action link was observed (${kinds.join(", ")}). Its flow was not executed.`,
+      `A customer action link was observed (${kinds.join(", ")}). It is an entry point only: SiteLens did not open or submit it, so it cannot tell whether a request reaches the business or is confirmed.`,
       "No booking, ordering, registration, or enquiry link was recognized in this sample.",
     ),
   ];

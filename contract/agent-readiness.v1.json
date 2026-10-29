@@ -27,6 +27,45 @@
     "ai_readable",
     "ai_executable"
   ],
+  "actionEvidenceLevels": [
+    "unknown",
+    "entry_found",
+    "declared",
+    "read_verified",
+    "test_flow_verified",
+    "production_verified"
+  ],
+  "claimStates": [
+    "supported",
+    "interpretation",
+    "unknown",
+    "unverifiable"
+  ],
+  "checkModes": [
+    "page",
+    "site"
+  ],
+  "pageReadStates": [
+    "content",
+    "status",
+    "skipped",
+    "failed"
+  ],
+  "pageSkipReasons": [
+    "robots",
+    "robots_unavailable",
+    "deadline"
+  ],
+  "pagePurposes": [
+    "home",
+    "services",
+    "pricing",
+    "contact",
+    "action",
+    "about",
+    "other",
+    "language_variant"
+  ],
   "severities": [
     "critical",
     "warning",

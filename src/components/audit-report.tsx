@@ -114,6 +114,13 @@ function CheckList({ checks }: { checks: Check[] }) {
   );
 }
 
+const CLAIM_WORDS: Record<string, string> = {
+  supported: "Stated in the cited evidence",
+  interpretation: "AI interpretation",
+  unknown: "Not found on the pages read",
+  unverifiable: "Can't be verified from public pages",
+};
+
 export default function AuditReportView({ report }: { report: AuditReport }) {
   const [exported, setExported] = useState("");
   const host = (() => {
@@ -151,7 +158,21 @@ export default function AuditReportView({ report }: { report: AuditReport }) {
         <div className="report-title">
           <div className="eyebrow">REPORT</div>
           <h2 id="report-title">{host}</h2>
-          <p className="url">{report.finalUrl}</p>
+          <p className="url">
+            {report.inputUrl !== report.finalUrl
+              ? `${report.inputUrl} → ${report.finalUrl}`
+              : report.finalUrl}
+          </p>
+          {report.mode && (
+            <p className="meta">
+              {report.mode === "page"
+                ? "Scope: this page only (plus site-wide files)"
+                : "Scope: this page and a bounded sample of related pages"}
+              {report.robotsPolicy === "respected"
+                ? " · robots.txt followed"
+                : ""}
+            </p>
+          )}
           <p className="meta">
             {report.coverage.retrieved} of {report.coverage.attempted} pages
             read · {found.length} of {report.resources.length} machine-readable
@@ -214,6 +235,24 @@ export default function AuditReportView({ report }: { report: AuditReport }) {
           <p className="empty">Nothing needs attention in what we checked.</p>
         )}
       </section>
+
+      {report.actionEvidence?.length ? (
+        <section className="block" aria-labelledby="customer-actions">
+          <h3 id="customer-actions">
+            Customer actions: how far the evidence goes
+          </h3>
+          <ul>
+            {report.actionEvidence.map((a) => (
+              <li key={a.kind}>
+                <strong>{a.kind}</strong> —{" "}
+                {a.level === "declared"
+                  ? "declared in the site's own action file (the site's claim, not verified)."
+                  : "link found — an entry point only. Nothing was submitted, so we can't tell whether a request reaches the business or is confirmed."}
+              </li>
+            ))}
+          </ul>
+        </section>
+      ) : null}
 
       <section className="block" aria-labelledby="machine-files">
         <h3 id="machine-files">Files for search engines and AI agents</h3>
@@ -310,7 +349,8 @@ export default function AuditReportView({ report }: { report: AuditReport }) {
               </strong>
               <p>{claim.text}</p>
               <small>
-                {claim.state} · <EvidenceLinks ids={claim.evidenceIds} />
+                {CLAIM_WORDS[claim.state] ?? claim.state} ·{" "}
+                <EvidenceLinks ids={claim.evidenceIds} />
               </small>
             </article>
           ))}
@@ -328,9 +368,17 @@ export default function AuditReportView({ report }: { report: AuditReport }) {
           .filter((p) => p.error)
           .map((p, i) => (
             <p key={i} className="muted">
-              Skipped {p.url}: {p.error}
+              {p.read === "skipped" ? "Not opened" : "Skipped"} {p.url}:{" "}
+              {p.error}
             </p>
           ))}
+        {report.coverage.notSampled?.length ? (
+          <p className="muted">
+            {report.coverage.notSampled.length} candidate page(s) were not read:
+            other-language versions of pages already read, or over the page
+            limit.
+          </p>
+        ) : null}
         {report.evidence.map((e) => (
           <details key={e.id} id={e.id}>
             <summary>

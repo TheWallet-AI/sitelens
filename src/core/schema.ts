@@ -1,11 +1,18 @@
 import { z } from "zod";
 import {
+  CLAIM_STATES,
   CONTRACT_VERSION,
   EVIDENCE_KINDS,
   READINESS_DIMENSIONS,
   RESOURCE_STATES,
+  type ActionEvidenceLevel,
+  type CheckMode,
+  type PagePurpose,
+  type PageReadState,
+  type PageSkipReason,
   type ReadinessDimension,
 } from "./contract";
+import type { ActionKind } from "./actions";
 import type { ResourceObservation } from "./resources";
 
 export const CheckSchema = z.object({
@@ -39,7 +46,8 @@ export const EvidenceSchema = z.object({
 export type Evidence = z.infer<typeof EvidenceSchema>;
 const claim = z.object({
   text: z.string().max(2000),
-  state: z.enum(["supported", "unknown", "interpretation"]),
+  /** "unverifiable" was added in 0.3.0; older reports only use the first three. */
+  state: z.enum(CLAIM_STATES),
   evidenceIds: z.array(z.string()).max(20),
 });
 export const AIAnalysisSchema = z.object({
@@ -77,13 +85,31 @@ export type Recommendation = {
   evidenceIds: string[];
   url: string;
 };
-export type AuditInput = { url: string };
+export type AuditInput = {
+  url: string;
+  /** Defaults to "site". "page" reads only the input page (plus site-wide files). */
+  mode?: CheckMode;
+};
 export type PageRecord = {
   url: string;
   finalUrl: string;
   status: number;
   error?: string;
   evidenceIds: string[];
+  /** 0.3.0+: the input page or a sampled page. */
+  role?: "entry" | "sample";
+  /** 0.3.0+: what the page was sampled for. */
+  purpose?: PagePurpose;
+  /** 0.3.0+: whether its text was read, only its status, or it was not opened. */
+  read?: PageReadState;
+  /** 0.3.0+: why the page was not opened. */
+  skipReason?: PageSkipReason;
+};
+/** 0.3.0+: how far the evidence goes for one customer action. */
+export type ActionEvidence = {
+  kind: ActionKind;
+  level: ActionEvidenceLevel;
+  basis: ("page_link" | "business_actions")[];
 };
 export type ExtractedPage = {
   text: string;
@@ -96,6 +122,8 @@ export type ExtractedPage = {
   jsonLdErrors: number;
   entityFields?: Record<string, string>;
   links: { url: string; text: string }[];
+  /** hreflang alternates of the page (absolute URLs). */
+  alternates: string[];
   truncated: boolean;
   blocked: boolean;
 };
@@ -109,6 +137,8 @@ export type CrawlResult = {
     retrieved: number;
     truncated: boolean;
     notes: string[];
+    /** 0.3.0+: candidate pages that were not read, and why. */
+    notSampled?: { url: string; reason: "language_variant" | "budget" }[];
   };
 };
 export type DimensionSummary = {
@@ -129,6 +159,12 @@ export type AuditReport = {
   completedAt: string;
   inputUrl: string;
   finalUrl: string;
+  /** 0.3.0+: "page" or "site". Absent in older reports (they behaved like "site"). */
+  mode?: CheckMode;
+  /** 0.3.0+: public audits follow robots.txt; disallowed pages are recorded as skipped. */
+  robotsPolicy?: "respected";
+  /** 0.3.0+: per customer action, how far the evidence goes (a link is only an entry point). */
+  actionEvidence?: ActionEvidence[];
   coverage: CrawlResult["coverage"];
   pages: PageRecord[];
   evidence: Evidence[];
