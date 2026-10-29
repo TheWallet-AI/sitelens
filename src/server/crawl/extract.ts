@@ -64,8 +64,22 @@ export function extractPage(body: string, url: URL): ExtractedPage {
     .map((_, e) => $(e).text().trim())
     .get()
     .slice(0, 60);
+  const alternates = $('link[rel="alternate"][hreflang]')
+    .map((_, e) => {
+      try {
+        return new URL($(e).attr("href") ?? "", url).href;
+      } catch {
+        return "";
+      }
+    })
+    .get()
+    .filter(Boolean)
+    .slice(0, 20);
   const password = $('input[type="password"]').length > 0;
   $("script,style,noscript,svg,iframe,template").remove();
+  // Without <main>, repeated navigation and footers would crowd out page content.
+  if (!$("main").length)
+    $("body nav, body header, body footer, body aside").remove();
   const text = ($("main").length ? $("main").text() : $("body").text())
     .replace(/\s+/g, " ")
     .trim();
@@ -75,6 +89,7 @@ export function extractPage(body: string, url: URL): ExtractedPage {
     canonical,
     robots,
     links,
+    alternates,
     headings,
     jsonLd,
     jsonLdErrors,

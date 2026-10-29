@@ -6,14 +6,27 @@
   "completedAt": "2026-10-17T00:00:00.000Z",
   "inputUrl": "https://morrow-coffee.example.com/",
   "finalUrl": "https://morrow-coffee.example.com/",
+  "mode": "site",
+  "robotsPolicy": "respected",
+  "actionEvidence": [
+    {
+      "kind": "booking",
+      "level": "entry_found",
+      "basis": [
+        "page_link"
+      ]
+    }
+  ],
   "coverage": {
     "attempted": 3,
     "retrieved": 3,
     "truncated": false,
     "notes": [
-      "Only sampled public HTML pages were checked. No JavaScript, forms, or transactions were executed.",
+      "Only sampled public HTML pages were checked (one per purpose; other-language versions of the same page are not repeated). No JavaScript, forms, or transactions were executed.",
+      "robots.txt was followed: pages it disallows for SiteLens were not opened.",
       "Machine-readable files were fetched with GET only. Declared tools, APIs, and actions were not invoked."
-    ]
+    ],
+    "notSampled": []
   },
   "pages": [
     {
@@ -22,7 +35,10 @@
       "status": 200,
       "evidenceIds": [
         "page-1"
-      ]
+      ],
+      "role": "entry",
+      "purpose": "home",
+      "read": "content"
     },
     {
       "url": "https://morrow-coffee.example.com/menu",
@@ -30,7 +46,10 @@
       "status": 200,
       "evidenceIds": [
         "page-2"
-      ]
+      ],
+      "role": "sample",
+      "purpose": "services",
+      "read": "content"
     },
     {
       "url": "https://morrow-coffee.example.com/reservations",
@@ -38,7 +57,10 @@
       "status": 200,
       "evidenceIds": [
         "page-3"
-      ]
+      ],
+      "role": "sample",
+      "purpose": "action",
+      "read": "content"
     }
   ],
   "evidence": [
@@ -228,7 +250,7 @@
       "id": "next-step",
       "category": "actions",
       "status": "pass",
-      "explanation": "A customer action link was observed (booking). Its flow was not executed.",
+      "explanation": "A customer action link was observed (booking). It is an entry point only: SiteLens did not open or submit it, so it cannot tell whether a request reaches the business or is confirmed.",
       "evidenceIds": [
         "page-1",
         "page-3"

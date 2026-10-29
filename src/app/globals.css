@@ -265,6 +265,28 @@ button span[aria-hidden="true"] {
 .scope {
   margin: 14px 0 4px;
 }
+.scope-mode {
+  border: 0;
+  margin: 14px 0 0;
+  padding: 0;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 18px;
+  font-size: 14px;
+  color: var(--ink);
+}
+.scope-mode legend {
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 4px;
+  padding: 0;
+}
+.scope-mode label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 32px;
+}
 .privacy {
   margin: 0;
 }

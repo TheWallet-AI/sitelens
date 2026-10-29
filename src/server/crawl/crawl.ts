@@ -5,6 +5,7 @@ import { checkRobots, type RobotsCache } from "./robots";
 import { extractPage } from "./extract";
 import { validatePublicUrl } from "./url-policy";
 import { isContactLink, isNextStepLink } from "../../core/actions";
+import { candidateUrl, pickSamplePages, purposeOf } from "../../core/sampling";
 export async function crawlSite(
   input: AuditInput,
   options: {
@@ -39,17 +40,36 @@ export async function crawlSite(
     }
     return p;
   };
+  /** Thrown when robots.txt disallows a URL or cannot be read; the page is then recorded as skipped. */
+  class RobotsSkip extends Error {
+    constructor(
+      message: string,
+      readonly reason: "robots" | "robots_unavailable",
+    ) {
+      super(message);
+    }
+  }
   const assertPolicy = async (url: URL) => {
     const decision = await policy(url);
-    if (decision.status !== "allowed") throw new Error(decision.reason);
+    if (decision.status !== "allowed")
+      throw new RobotsSkip(
+        decision.reason,
+        decision.status === "disallowed" ? "robots" : "robots_unavailable",
+      );
   };
   let remaining = LIMITS.totalText;
-  async function visit(url: URL, isEntry = false) {
+  async function visit(
+    url: URL,
+    isEntry = false,
+    purpose: PageRecord["purpose"] = purposeOf(url.href),
+  ) {
     const page: PageRecord = {
       url: url.href,
       finalUrl: url.href,
       status: 0,
       evidenceIds: [],
+      role: isEntry ? "entry" : "sample",
+      purpose,
     };
     result.coverage.attempted++;
     try {
@@ -131,9 +151,17 @@ export async function crawlSite(
       });
       result.extracted.push(parsed);
       result.coverage.retrieved++;
+      page.read = "content";
       return parsed;
     } catch (error) {
       page.error = error instanceof Error ? error.message : "Page unavailable.";
+      if (error instanceof RobotsSkip) {
+        page.read = "skipped";
+        page.skipReason = error.reason;
+      } else if (options.signal.aborted && page.status === 0) {
+        page.read = "skipped";
+        page.skipReason = "deadline";
+      } else page.read = page.status ? "status" : "failed";
       return null;
     } finally {
       result.pages.push(page);
@@ -141,44 +169,42 @@ export async function crawlSite(
     }
   }
   const home = await visit(entry, true);
-  if (home && !options.signal.aborted) {
+  if (home && !options.signal.aborted && (input.mode ?? "site") === "site") {
     const origin = new URL(result.finalUrl).origin;
-    const seen = new Set([entry.href, result.finalUrl]);
-    const priority = (text: string) =>
-      /about|service|contact|faq|menu|pricing|关于|服务|联系|關於|服務|聯絡|会社概要|サービス|お問い合わせ|tentang|perkhidmatan|hubungi/i.test(
-        text,
-      )
-        ? 0
-        : 1;
-    const targets = home.links
-      .filter((link) => {
-        try {
-          const u = validatePublicUrl(link.url);
-          if (u.origin !== origin || seen.has(u.href) || u.search) return false;
-          seen.add(u.href);
-          return true;
-        } catch {
-          return false;
-        }
-      })
-      .sort(
-        (a, b) =>
-          priority(a.url + " " + a.text) - priority(b.url + " " + b.text),
-      )
-      .slice(0, LIMITS.pages - 1);
+    const candidates = home.links.flatMap((link) => {
+      try {
+        const url = candidateUrl(validatePublicUrl(link.url).href, origin);
+        return url ? [{ url, text: link.text }] : [];
+      } catch {
+        return [];
+      }
+    });
+    const { picks, skipped } = pickSamplePages({
+      entry: result.finalUrl,
+      exclude: [entry.href, ...(home.canonical ? [home.canonical] : [])],
+      alternates: home.alternates,
+      candidates,
+      budget: LIMITS.pages - 1,
+    });
+    result.coverage.notSampled = skipped.slice(0, 12);
     for (
       let i = 0;
-      i < targets.length && !options.signal.aborted;
+      i < picks.length && !options.signal.aborted;
       i += LIMITS.fetchConcurrency
     )
       await Promise.all(
-        targets
+        picks
           .slice(i, i + LIMITS.fetchConcurrency)
-          .map((link) => visit(new URL(link.url))),
+          .map((pick) => visit(new URL(pick.url), false, pick.purpose)),
       );
   }
   result.coverage.notes.push(
-    "Only sampled public HTML pages were checked. No JavaScript, forms, or transactions were executed.",
+    (input.mode ?? "site") === "page"
+      ? "Only the input page was read (plus site-wide files). No JavaScript, forms, or transactions were executed."
+      : "Only sampled public HTML pages were checked (one per purpose; other-language versions of the same page are not repeated). No JavaScript, forms, or transactions were executed.",
+  );
+  result.coverage.notes.push(
+    "robots.txt was followed: pages it disallows for SiteLens were not opened.",
   );
   if (result.coverage.truncated)
     result.coverage.notes.push(

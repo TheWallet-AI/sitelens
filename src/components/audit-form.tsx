@@ -5,6 +5,7 @@ import { decodeEvents } from "../core/stream";
 import AuditReportView from "./audit-report";
 export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
   const [url, setUrl] = useState(""),
+    [mode, setMode] = useState<"auto" | "page" | "site">("auto"),
     [busy, setBusy] = useState(false),
     [message, setMessage] = useState(""),
     [error, setError] = useState(""),
@@ -35,7 +36,10 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
       const response = await fetch("/api/audit", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ url: parsed.href }),
+        body: JSON.stringify({
+          url: parsed.href,
+          ...(mode === "auto" ? {} : { mode }),
+        }),
         signal: controller.signal,
       });
       if (!response.ok) {
@@ -101,9 +105,35 @@ export default function AuditForm({ aiEnabled }: { aiEnabled: boolean }) {
               <span aria-hidden="true">↗</span>
             </button>
           </div>
+          <fieldset className="scope-mode">
+            <legend>What to check</legend>
+            {(
+              [
+                [
+                  "auto",
+                  "Automatic (a homepage checks the site; a specific page checks that page)",
+                ],
+                ["page", "This page only"],
+                ["site", "This page and a few related pages"],
+              ] as const
+            ).map(([value, label]) => (
+              <label key={value}>
+                <input
+                  type="radio"
+                  name="mode"
+                  value={value}
+                  checked={mode === value}
+                  onChange={() => setMode(value)}
+                  disabled={busy}
+                />{" "}
+                {label}
+              </label>
+            ))}
+          </fieldset>
           <p className="scope">
             Up to 5 public pages and 11 machine-readable files · Usually under
-            90 seconds · Read-only: no forms, sign-in or transactions
+            90 seconds · Read-only: no forms, sign-in or transactions · Follows
+            robots.txt
           </p>
           <p className="privacy">
             {aiEnabled

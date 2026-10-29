@@ -16,6 +16,13 @@ Reports have `schemaVersion: "2"` and `contract: "agent-readiness/1"`. See
 - `aiAnalysis` — nullable optional AI analysis, unchanged from v1.
 - `recommendations` — optional Infoholder links, unchanged from v1.
 - `limitations` — what no audit can establish.
+- 0.3.0 additions (all optional, so 0.2 reports still validate): `mode`
+  (`page` or `site`; absent reports behaved like `site`), `robotsPolicy`
+  (`respected`), `actionEvidence` (`{kind, level, basis}` per customer action;
+  see "Action evidence levels" in the contract), `coverage.notSampled`
+  (`{url, reason}` with `language_variant` or `budget`), and per page `role`
+  (`entry`, `sample`), `purpose`, `read` and `skipReason`. AI claim `state`
+  may also be `unverifiable`. `schemaVersion` stays `"2"`.
 
 ## Readiness criteria
 

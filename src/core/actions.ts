@@ -98,3 +98,67 @@ export function isContactLink(link: { url: string; text: string }): boolean {
 export function isNextStepLink(link: { url: string; text: string }): boolean {
   return linkActions(link).length > 0;
 }
+
+/** Business-action verbs in a declared action file → the link kind they correspond to. */
+const DECLARED_KIND: Record<string, ActionKind> = {
+  reservation: "booking",
+  vip_reservation: "booking",
+  appointment: "booking",
+  booking: "booking",
+  order: "order",
+  purchase: "order",
+  membership: "register",
+  event_booking: "register",
+  registration: "register",
+  contact: "enquiry",
+  enquiry: "enquiry",
+};
+
+/**
+ * How far the evidence goes for each customer action, using the contract's
+ * `actionEvidenceLevels`. A recognized link is only `entry_found`; an action
+ * listed in the site's own business-actions file is `declared` (its
+ * self-reported reach does not raise the level). A public audit never
+ * submits anything, so it cannot reach `read_verified` or beyond.
+ */
+export function actionEvidence(input: {
+  links: readonly { url: string; text: string }[];
+  declared?: readonly { type: string }[];
+}): {
+  kind: ActionKind;
+  level: "entry_found" | "declared";
+  basis: ("page_link" | "business_actions")[];
+}[] {
+  const found = new Map<
+    ActionKind,
+    {
+      level: "entry_found" | "declared";
+      basis: Set<"page_link" | "business_actions">;
+    }
+  >();
+  for (const link of input.links)
+    for (const kind of linkActions(link)) {
+      const current = found.get(kind) ?? {
+        level: "entry_found" as const,
+        basis: new Set(),
+      };
+      current.basis.add("page_link");
+      found.set(kind, current);
+    }
+  for (const action of input.declared ?? []) {
+    const kind = DECLARED_KIND[action.type];
+    if (!kind) continue;
+    const current = found.get(kind) ?? {
+      level: "declared" as const,
+      basis: new Set(),
+    };
+    current.level = "declared";
+    current.basis.add("business_actions");
+    found.set(kind, current);
+  }
+  return ACTION_KINDS.filter((kind) => found.has(kind)).map((kind) => ({
+    kind,
+    level: found.get(kind)!.level,
+    basis: [...found.get(kind)!.basis],
+  }));
+}

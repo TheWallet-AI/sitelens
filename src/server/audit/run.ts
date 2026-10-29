@@ -3,6 +3,7 @@ import type { AuditInput, AuditEvent, AuditReport } from "../../core/schema";
 import { LIMITS } from "../../core/limits";
 import { CONTRACT_VERSION } from "../../core/contract";
 import { runChecks, summarizeReadiness } from "../../core/checks";
+import { actionEvidence } from "../../core/actions";
 import { REPORT_LIMITATIONS } from "../../core/migrate";
 import { recommendServices } from "../../core/recommendations";
 import { integrationConfig } from "../../integrations/infoholder/config";
@@ -77,7 +78,13 @@ export async function runAudit(
       if (config) {
         emit("phase", "Analyzing evidence with the configured AI provider.");
         // Page evidence only: resource files are checked deterministically.
-        aiAnalysis = await analyzeEvidence(crawl.evidence, { signal, config });
+        aiAnalysis = await analyzeEvidence(crawl.evidence, {
+          signal,
+          config,
+          notRead:
+            crawl.pages.filter((p) => p.read !== "content").length +
+            (crawl.coverage.notSampled?.length ?? 0),
+        });
       } else
         emit(
           "warning",
@@ -98,6 +105,14 @@ export async function runAudit(
     completedAt: new Date().toISOString(),
     inputUrl: input.url,
     finalUrl: crawl.finalUrl,
+    mode: input.mode ?? "site",
+    robotsPolicy: "respected",
+    actionEvidence: actionEvidence({
+      links: crawl.extracted.flatMap((page) => page.links),
+      declared: phase.observations
+        .filter((r) => r.kind === "business_actions" && r.state === "valid")
+        .flatMap((r) => r.declared.actions ?? []),
+    }),
     coverage: {
       ...crawl.coverage,
       notes: [...crawl.coverage.notes, ...phase.notes],
