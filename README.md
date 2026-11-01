@@ -51,6 +51,16 @@ AI_OUTPUT_MODE=json
 
 The provider must support `POST /chat/completions`. Set output mode to `text` if JSON response format is unsupported; returned content must still be valid JSON. Credentials stay on the server. Extracted public website text is sent to your configured provider only when AI is enabled. Provider retention and billing policies apply. No live provider is included.
 
+## Command line and CI
+
+The same audit runs from a terminal or a CI job (same URL policy, robots.txt handling, budgets and timeouts as the web app). AI analysis is off unless `--ai` is passed.
+
+```sh
+node bin/sitelens.mjs audit https://your-site.example --format ci
+```
+
+Exit codes: `0` pass, `1` definite failures, `2` usage error or URL not accepted, `3` could not tell (nothing was read). Missing optional machine-readable files (llms.txt, ai.json, MCP, OpenAPI, …) never fail a run; broken ones fail only with `--strict-optional`. See [docs/ci.md](docs/ci.md).
+
 ## Production
 
 ```sh
