@@ -8,7 +8,8 @@
     "start": "next start",
     "test": "vitest run",
     "typecheck": "tsc --noEmit",
-    "lint": "eslint ."
+    "lint": "eslint .",
+    "audit": "node bin/sitelens.mjs audit"
   },
   "engines": {
     "node": ">=22"
@@ -33,5 +34,8 @@
     "typescript": "6.0.3",
     "vitest": "5.0.5"
   },
-  "type": "module"
+  "type": "module",
+  "bin": {
+    "sitelens": "bin/sitelens.mjs"
+  }
 }
