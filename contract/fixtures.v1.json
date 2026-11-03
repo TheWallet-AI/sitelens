@@ -204,6 +204,20 @@
       "contentType": "application/json",
       "state": "valid",
       "codes": []
+    },
+    {
+      "file": "ai.infoholder.platform.json",
+      "kind": "ai_json",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
+    },
+    {
+      "file": "ai.infoholder.contact.json",
+      "kind": "ai_json",
+      "contentType": "application/json",
+      "state": "valid",
+      "codes": []
     }
   ]
 }
