@@ -188,6 +188,26 @@ Any JSON object is structurally `valid`. Files declaring
 absolute URL. `agent` is optional. Static files never contain live prices,
 stock or availability.
 
+Validators ignore keys they do not know. Two optional extensions are in use:
+
+- **Platform profile.** A product that builds sites (rather than a single
+  business) sets `"kind": "platform"`, leaves `capabilities` empty (customer
+  actions belong to each business site it publishes) and may describe itself
+  under `product`: `pricing` (`{ "url", "structuredData" }`, pointing at a page
+  whose schema.org `Offer` data is generated from the live plan catalog; no
+  prices are copied into the file), `signUp` (`{ "url", "method", "steps",
+"limitations" }`, describing the real flow, including steps only a person can
+  complete, such as entering an emailed code), `agentGateway` and `publicApi`
+  (`null` when not offered). See `fixtures/ai.infoholder.platform.json`.
+- **Contact capability.** A business whose contact form delivers enquiries to
+  the business lists `{ "type": "contact", "reach": "ai_readable" }`: an AI can
+  find the entry point; a person submits the form. See
+  `fixtures/ai.infoholder.contact.json`.
+
+Declared capabilities are claims. A `contact` or `reservation` capability means
+an entry point exists; it does not mean a request was delivered, accepted or
+confirmed by the business.
+
 ### Business action manifest
 
 `/.well-known/business-actions.json`, version 1, published by Infoholder

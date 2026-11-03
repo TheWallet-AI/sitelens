@@ -1,0 +1,15 @@
+{
+  "spec": "infoholder-ai-json/1",
+  "name": "Morrow Grooming (demo service business)",
+  "url": "https://morrow-coffee.example.com",
+  "status": "live",
+  "generator": "Infoholder Studio",
+  "generatedAt": "2026-11-03T00:00:00.000Z",
+  "resources": [
+    { "kind": "business_actions", "url": "https://morrow-coffee.example.com/.well-known/business-actions.json" }
+  ],
+  "capabilities": [
+    { "type": "contact", "url": "https://morrow-coffee.example.com/contact", "reach": "ai_readable" }
+  ],
+  "limitations": ["Capabilities marked ai_readable can be understood and linked to by an AI system; a person completes them on the website."]
+}

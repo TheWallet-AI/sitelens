@@ -1,0 +1,25 @@
+{
+  "spec": "infoholder-ai-json/1",
+  "name": "Morrow Studio (demo platform)",
+  "url": "https://morrow-coffee.example.com/studio",
+  "description": "Fictional website builder used to show the platform profile.",
+  "status": "live",
+  "generator": "Infoholder Studio",
+  "kind": "platform",
+  "resources": [
+    { "kind": "llms_txt", "url": "https://morrow-coffee.example.com/studio/llms.txt" }
+  ],
+  "capabilities": [],
+  "product": {
+    "pricing": { "url": "https://morrow-coffee.example.com/studio/en/pricing", "structuredData": "schema.org/Offer" },
+    "signUp": {
+      "url": "https://morrow-coffee.example.com/studio/en/signin",
+      "method": "email_verification_code",
+      "steps": ["Enter an email address.", "Enter the code sent to that email."],
+      "limitations": ["The verification code is sent to the person's own inbox, so an AI agent cannot complete sign-up on someone's behalf."]
+    },
+    "agentGateway": null,
+    "publicApi": null
+  },
+  "limitations": ["No agent can make payments or sign in on anyone's behalf."]
+}
